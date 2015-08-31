@@ -1,0 +1,16 @@
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1
+#define MPITEST_MPI2_2 1

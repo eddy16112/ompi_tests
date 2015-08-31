@@ -1,0 +1,10 @@
+MPI_Abort_c
+MPI_Abort_f
+MPI_Errhandler_fatal_c
+MPI_Errhandler_fatal1_c
+MPI_Errhandler_fatal2_c
+MPI_Errhandler_fatal_f
+MPI_Errhandler_fatal1_f
+MPI_Errhandler_fatal2_f
+MPI_Finalize_c
+MPI_Finalize_f

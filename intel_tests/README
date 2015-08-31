@@ -1,0 +1,143 @@
+-*- text -*-
+
+This is a reorganized and simplified version of the Intel MPI test suite
+driven by a simple Makefile instead of the full-featured set of scripts
+from the original suite.  Some may find this easier to use in a multi-
+platform environment.
+
+You can run a single test as follows:
+
+$ make MPI_Barrier_c
+
+You can run a set of tests listed in a file like this:
+
+$ make run FILE=lampi_regression
+
+You can modify the default parameters like this:
+
+$ make MPI_Barrier_c MPIRUN='mpirun -np 6' CFLAGS='-g'
+
+Note: you may want to examine and modify Makefile and src/Makefile to
+your [default] tastes.
+
+===========================================================================
+
+The following tests will not pass on Open MPI:
+
+MPI_Cancel_some_*
+-----------------
+
+This test is written poorly -- it does not take into account the fact
+that it is valid for an MPI to fail to MPI_CANCEL a request (i.e., if
+an MPI fails to cancel a request, this test calls it an error).  In
+addition, Open MPI does not currently cancel send requests (Open MPI
+does implement canceling receive requests that have not started yet),
+which is all that this test exercises, so there's no point in running
+it.
+
+
+MPI_Type_lb_neg_displ_c
+MPI_Type_lb_pos_displ_c
+MPI_Type_ub_2MPI_UB_c
+-----------------------
+
+George feels that these tests all are incorrect.  George please fill
+in more here...
+
+
+MPI_Send_init_self_c
+--------------------
+
+Despite the name of this test, it actually required buffering of sent
+messages.  The message pattern is something like:
+
+MPI_Send_init
+MPI_Start
+MPI_Wait
+MPI_Request_free
+MPI_Recv
+
+If we move the receive up and make it nonblocking and have the Wait
+wait for both requests, the test will pass.
+
+That, or we add some form of buffering in the self ptl.  :-)  (all
+other PTLs have some level of buffering -- for short messages)
+
+But right now, we'll block in MPI_Wait, and the test will eventually
+timeout (it has a timer in MCW rank 0) and fail.
+
+
+MPI_*[Rr]educe*
+---------------
+
+These tests are susecptible to problems when running with large
+numbers of processes.  For example, in MPI_Reduce_c, for the MPI_PROD
+test, it multiples a sequence of 1's and 2's.  At 64 processes, it's
+effectively calculating 2^32 (4B, or UINT_MAX on 32 bit machines),
+which will cause an overflow on 32 bit machines and will likely report
+an incorrect answer.
+
+Hence, running these tests on large numbers of nodes (depending on the
+size of int's and longs) may report false failures due to an
+overflow.  The test could probably be fixed to ensure that it never
+does this, but it's not worth it at this point.
+
+
+===========================================================================
+
+The following tests were modified:
+
+MPI_Address_f
+-------------
+
+This test compared the output from calling MPI_ADDRESS on a Fortran
+variable to the value of MPI_BOTTOM -- assumedly to ensure that
+MPI_BOTTOM really represented the bottom of the address space.  This
+is an incorrect intrepretation of the standard, however.  MPI_BOTTOM
+does not have to *be* the bottom of the process address space; it only
+has to *represent* the bottom of the process address space to MPI.
+
+
+MPI_Cart_shift_nonperiodic_f
+----------------------------
+
+This test incorrectly called MPI_CART_RANK with one of the coordinates
+being MPI_PROC_NULL.  The C version of this test explicitly tests for
+this case and skips the call to MPI_CART_RANK when this happens.  The
+Fortran test was therefore modified to match this behavior (skip
+calling MPI_CART_RANK when one of the coordinates is MPI_PROC_NULL).
+
+
+MPI_Keyval1_f
+-------------
+
+There was nothing wrong with this test; it was augmented to have a few
+extra things to test for specific things that were [previously] found
+to be wrong in Open MPI:
+
+- set the values of attributes to be known wrong values before calling
+  MPI_ATTR_GET.  This prevents an uninitialized (or previously
+  initialized value) to accidentally be the right value, therefore
+  erroneously passing the test.
+- set the base comparison values of the 4 different keyvals to be
+  different values, not just the MCW rank of this process.
+- ensure that attributes are not stored by reference.
+
+
+MPI_Type_lb_2MPI_LB_c
+MPI_Type_lb_2MPI_LB_f
+---------------------
+
+Correct these 2 tests. The main problem was:
+
+- in libmpitest.c the last 2 derived data types have an explicit LB
+  (set to ZERO).
+- on the first loop they explicitly add a new LB (set to length = the
+  size of datatype)
+- when they merge together the 2 new data types they (again) set a LB
+  marker to MPITEST_MIN_DISPL * 2 respectivly MPITEST_MIN_DISPL
+
+=> Thus, it's clear than the expected LB at the end should be length +
+   2 * MPITEST_MIN_DISPL IF the length is greater than
+   MPITEST_MIN_DISPL
+

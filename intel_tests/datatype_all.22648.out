@@ -1,0 +1,1969 @@
+Intel MPI test suite
+Date:     Tue Dec  2 02:55:22 EST 2014
+Host:     Linux dancer.icl.utk.edu 3.16.1-1.el6.elrepo.x86_64 #1 SMP Thu Aug 14 13:46:29 EDT 2014 x86_64 x86_64 x86_64 GNU/Linux
+Log:      datatype_all.22648.out
+Version:
+Open MPI v1.9.0a1
+
+http://www.open-mpi.org/community/help/
+Testfile:         datatype_all
+Tests:
+MPI_Type_hvector_blklen_c
+MPI_Type_size_types_c
+MPI_Type_contiguous_basic_c
+MPI_Type_hvector_blklen_f
+MPI_Type_size_types_f
+MPI_Type_contiguous_basic_f
+MPI_Type_hvector_stride_c
+MPI_Type_struct_basic_c
+MPI_Type_hvector_stride_f
+MPI_Type_struct_basic_f
+MPI_Type_contiguous_idispls_c
+MPI_Type_hvector_types_c
+MPI_Type_struct_blklen_c
+MPI_Type_contiguous_idispls_f
+MPI_Type_hvector_types_f
+MPI_Type_struct_blklen_f
+MPI_Type_contiguous_types_c
+MPI_Type_indexed_basic_c
+MPI_Type_struct_displs_c
+MPI_Type_contiguous_types_f
+MPI_Type_indexed_basic_f
+MPI_Type_struct_displs_f
+MPI_Type_extent_MPI_LB_UB_c
+MPI_Type_indexed_blklen_c
+MPI_Type_struct_types_c
+MPI_Type_extent_MPI_LB_UB_f
+MPI_Type_indexed_blklen_f
+MPI_Type_struct_types_f
+MPI_Type_extent_types_c
+MPI_Type_indexed_displs_c
+MPI_Type_extent_types_f
+MPI_Type_indexed_displs_f
+MPI_Type_ub_2MPI_UB_f
+MPI_Type_free_pending_msg_c
+MPI_Type_indexed_types_c
+MPI_Type_ub_MPI_UB_c
+MPI_Type_free_pending_msg_f
+MPI_Type_indexed_types_f
+MPI_Type_ub_MPI_UB_f
+MPI_Type_free_types_c
+MPI_Type_ub_neg_displ_c
+MPI_Type_free_types_f
+MPI_Type_ub_neg_displ_f
+MPI_Type_hindexed_basic_c
+MPI_Type_ub_pos_displ_c
+MPI_Type_hindexed_basic_f
+MPI_Type_lb_MPI_LB_f
+MPI_Type_ub_pos_displ_f
+MPI_Type_hindexed_blklen_c
+MPI_Type_vector_basic_c
+MPI_Type_hindexed_blklen_f
+MPI_Type_lb_neg_displ_f
+MPI_Type_vector_basic_f
+MPI_Type_hindexed_displs_c
+MPI_Type_vector_blklen_c
+MPI_Type_hindexed_displs_f
+MPI_Type_lb_pos_displ_f
+MPI_Type_vector_blklen_f
+MPI_Type_hindexed_types_c
+MPI_Type_size_MPI_LB_UB_c
+MPI_Type_vector_stride_c
+MPI_Type_hindexed_types_f
+MPI_Type_size_MPI_LB_UB_f
+MPI_Type_vector_stride_f
+MPI_Type_hvector_basic_c
+MPI_Type_size_basic_c
+MPI_Type_vector_types_c
+MPI_Type_hvector_basic_f
+MPI_Type_size_basic_f
+MPI_Type_vector_types_f
+
+[[[ START OF TESTS ]]]
+++++ MPI_Type_hvector_blklen_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hvector_blklen_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0"  -c -o libmpitest.o libmpitest.c
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hvector_blklen_c MPI_Type_hvector_blklen_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hvector_blklen_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_hvector_blklen test
+MPITEST_results: MPI_Type_hvector_blklen all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hvector_blklen_c
+++++ MPI_Type_size_types_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_size_types_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_size_types_c MPI_Type_size_types_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_size_types_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_size_types test
+MPITEST_results: MPI_Type_size_types all tests PASSED (578)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_size_types_c
+++++ MPI_Type_contiguous_basic_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_contiguous_basic_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_contiguous_basic_c MPI_Type_contiguous_basic_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_contiguous_basic_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_contiguous_basic test
+MPITEST_results: MPI_Type_contiguous_basic all tests PASSED (39096)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_contiguous_basic_c
+++++ MPI_Type_hvector_blklen_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hvector_blklen_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o mpitest_deff mpitest_deff.c
+rm -f mpitest_deff.h
+mpirun ./mpitest_deff > mpitest_deff.h
+rm -f mpitest_deff
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0"  -c -o libmpitestf.o libmpitestf.F
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hvector_blklen_f MPI_Type_hvector_blklen_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hvector_blklen_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_hvector_blklen  
+MPITEST_results: MPI_Type_hvector_blklen all tests PASSED (      1629)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hvector_blklen_f
+++++ MPI_Type_size_types_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_size_types_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_size_types_f MPI_Type_size_types_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_size_types_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_size_types      
+MPITEST_results: MPI_Type_size_types all tests PASSED (       561)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_size_types_f
+++++ MPI_Type_contiguous_basic_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_contiguous_basic_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_contiguous_basic_f MPI_Type_contiguous_basic_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_contiguous_basic_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_contiguous_basic
+MPITEST_results: MPI_Type_contiguous_basic all tests PASSED (     34933)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_contiguous_basic_f
+++++ MPI_Type_hvector_stride_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hvector_stride_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hvector_stride_c MPI_Type_hvector_stride_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hvector_stride_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_hvector_stride test
+MPITEST_results: MPI_Type_hvector_stride all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hvector_stride_c
+++++ MPI_Type_struct_basic_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_struct_basic_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_struct_basic_c MPI_Type_struct_basic_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_struct_basic_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_struct_basic test
+MPITEST_results: MPI_Type_struct_basic all tests PASSED (39096)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_struct_basic_c
+++++ MPI_Type_hvector_stride_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hvector_stride_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hvector_stride_f MPI_Type_hvector_stride_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hvector_stride_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_hvector_stride  
+MPITEST_results: MPI_Type_hvector_stride all tests PASSED (       181)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hvector_stride_f
+++++ MPI_Type_struct_basic_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_struct_basic_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_struct_basic_f MPI_Type_struct_basic_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_struct_basic_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_struct_basic    
+MPITEST_results: MPI_Type_struct_basic all tests PASSED (     39096)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_struct_basic_f
+++++ MPI_Type_contiguous_idispls_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_contiguous_idispls_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_contiguous_idispls_c MPI_Type_contiguous_idispls_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_contiguous_idispls_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_contiguous_inner_displs test
+MPITEST_results: MPI_Type_contiguous_inner_displs all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_contiguous_idispls_c
+++++ MPI_Type_hvector_types_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hvector_types_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hvector_types_c MPI_Type_hvector_types_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hvector_types_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_hvector_types test
+MPITEST_results: MPI_Type_hvector_types all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hvector_types_c
+++++ MPI_Type_struct_blklen_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_struct_blklen_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_struct_blklen_c MPI_Type_struct_blklen_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_struct_blklen_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_struct_blklen test
+MPITEST_results: MPI_Type_struct_blklen all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_struct_blklen_c
+++++ MPI_Type_contiguous_idispls_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_contiguous_idispls_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_contiguous_idispls_f MPI_Type_contiguous_idispls_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_contiguous_idispls_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_contiguous_inner_displs
+MPITEST_results: MPI_Type_contiguous_inner_displs all tests PASSED (       181)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_contiguous_idispls_f
+++++ MPI_Type_hvector_types_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hvector_types_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hvector_types_f MPI_Type_hvector_types_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hvector_types_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_vector_types    
+MPITEST_results: MPI_Type_vector_types all tests PASSED (       362)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hvector_types_f
+++++ MPI_Type_struct_blklen_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_struct_blklen_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_struct_blklen_f MPI_Type_struct_blklen_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_struct_blklen_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_struct_blklen   
+MPITEST_results: MPI_Type_struct_blklen all tests PASSED (      1629)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_struct_blklen_f
+++++ MPI_Type_contiguous_types_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_contiguous_types_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_contiguous_types_c MPI_Type_contiguous_types_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_contiguous_types_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_contiguous_types test
+MPITEST_results: MPI_Type_contiguous_types all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_contiguous_types_c
+++++ MPI_Type_indexed_basic_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_indexed_basic_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_indexed_basic_c MPI_Type_indexed_basic_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_indexed_basic_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_indexed_basic test
+MPITEST_results: MPI_Type_indexed_basic all tests PASSED (39096)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_indexed_basic_c
+++++ MPI_Type_struct_displs_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_struct_displs_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_struct_displs_c MPI_Type_struct_displs_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_struct_displs_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_struct_blklen test
+MPITEST_results: MPI_Type_struct_blklen all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_struct_displs_c
+++++ MPI_Type_contiguous_types_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_contiguous_types_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_contiguous_types_f MPI_Type_contiguous_types_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_contiguous_types_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_contiguous_types
+MPITEST_results: MPI_Type_contiguous_types all tests PASSED (       362)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_contiguous_types_f
+++++ MPI_Type_indexed_basic_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_indexed_basic_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_indexed_basic_f MPI_Type_indexed_basic_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_indexed_basic_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_indexed_basic   
+MPITEST_results: MPI_Type_indexed_basic all tests PASSED (     39096)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_indexed_basic_f
+++++ MPI_Type_struct_displs_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_struct_displs_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_struct_displs_f MPI_Type_struct_displs_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_struct_displs_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_struct_displs   
+MPITEST_results: MPI_Type_struct_displs all tests PASSED (      1629)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_struct_displs_f
+++++ MPI_Type_extent_MPI_LB_UB_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_extent_MPI_LB_UB_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_extent_MPI_LB_UB_c MPI_Type_extent_MPI_LB_UB_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_extent_MPI_LB_UB_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_extent_MPI_LB_UB test
+MPITEST_results: MPI_Type_extent_MPI_LB_UB all tests PASSED (34)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_extent_MPI_LB_UB_c
+++++ MPI_Type_indexed_blklen_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_indexed_blklen_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_indexed_blklen_c MPI_Type_indexed_blklen_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_indexed_blklen_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_indexed_blklen test
+MPITEST_results: MPI_Type_indexed_blklen all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_indexed_blklen_c
+++++ MPI_Type_struct_types_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_struct_types_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_struct_types_c MPI_Type_struct_types_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_struct_types_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_struct_types test
+MPITEST_results: MPI_Type_struct_types all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_struct_types_c
+++++ MPI_Type_extent_MPI_LB_UB_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_extent_MPI_LB_UB_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_extent_MPI_LB_UB_f MPI_Type_extent_MPI_LB_UB_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_extent_MPI_LB_UB_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_extent_MPI_LB_UB
+MPITEST_results: MPI_Type_extent_MPI_LB_UB all tests PASSED (        33)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_extent_MPI_LB_UB_f
+++++ MPI_Type_indexed_blklen_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_indexed_blklen_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_indexed_blklen_f MPI_Type_indexed_blklen_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_indexed_blklen_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_indexed_blklen  
+MPITEST_results: MPI_Type_indexed_blklen all tests PASSED (      1629)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_indexed_blklen_f
+++++ MPI_Type_struct_types_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_struct_types_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_struct_types_f MPI_Type_struct_types_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_struct_types_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_struct_types    
+MPITEST_results: MPI_Type_struct_types all tests PASSED (       362)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_struct_types_f
+++++ MPI_Type_extent_types_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_extent_types_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_extent_types_c MPI_Type_extent_types_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_extent_types_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_extent_types test
+MPITEST_results: MPI_Type_extent_types all tests PASSED (612)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_extent_types_c
+++++ MPI_Type_indexed_displs_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_indexed_displs_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_indexed_displs_c MPI_Type_indexed_displs_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_indexed_displs_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_indexed_displs test
+MPITEST_results: MPI_Type_indexed_displs all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_indexed_displs_c
+++++ MPI_Type_extent_types_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_extent_types_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_extent_types_f MPI_Type_extent_types_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_extent_types_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_extent_types    
+MPITEST_results: MPI_Type_extent_types all tests PASSED (       594)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_extent_types_f
+++++ MPI_Type_indexed_displs_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_indexed_displs_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_indexed_displs_f MPI_Type_indexed_displs_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_indexed_displs_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_indexed_displs  
+MPITEST_results: MPI_Type_indexed_displs all tests PASSED (      1629)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_indexed_displs_f
+++++ MPI_Type_ub_2MPI_UB_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_ub_2MPI_UB_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_ub_2MPI_UB_f MPI_Type_ub_2MPI_UB_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_ub_2MPI_UB_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_ub_2MPI_UB      
+MPITEST_results: MPI_Type_ub_2MPI_UB all tests PASSED (       612)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_ub_2MPI_UB_f
+++++ MPI_Type_free_pending_msg_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_free_pending_msg_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_free_pending_msg_c MPI_Type_free_pending_msg_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_free_pending_msg_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_free_pending_msg test
+MPITEST_results: MPI_Type_free_pending_msg all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_free_pending_msg_c
+++++ MPI_Type_indexed_types_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_indexed_types_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_indexed_types_c MPI_Type_indexed_types_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_indexed_types_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_indexed_types test
+MPITEST_results: MPI_Type_indexed_types all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_indexed_types_c
+++++ MPI_Type_ub_MPI_UB_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_ub_MPI_UB_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_ub_MPI_UB_c MPI_Type_ub_MPI_UB_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_ub_MPI_UB_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_ub_MPI_UB test
+MPITEST_results: MPI_Type_ub_MPI_UB all tests PASSED (612)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_ub_MPI_UB_c
+++++ MPI_Type_free_pending_msg_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_free_pending_msg_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_free_pending_msg_f MPI_Type_free_pending_msg_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_free_pending_msg_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_free_pending    
+MPITEST_results: MPI_Type_free_pending all tests PASSED (       362)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_free_pending_msg_f
+++++ MPI_Type_indexed_types_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_indexed_types_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_indexed_types_f MPI_Type_indexed_types_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_indexed_types_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_indexed_types   
+MPITEST_results: MPI_Type_indexed_types all tests PASSED (       362)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_indexed_types_f
+++++ MPI_Type_ub_MPI_UB_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_ub_MPI_UB_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_ub_MPI_UB_f MPI_Type_ub_MPI_UB_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_ub_MPI_UB_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_ub_MPI_UB       
+MPITEST_results: MPI_Type_ub_MPI_UB all tests PASSED (       612)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_ub_MPI_UB_f
+++++ MPI_Type_free_types_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_free_types_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_free_types_c MPI_Type_free_types_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_free_types_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_free_pending_msg test
+MPITEST_results: MPI_Type_free_pending_msg all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_free_types_c
+++++ MPI_Type_ub_neg_displ_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_ub_neg_displ_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_ub_neg_displ_c MPI_Type_ub_neg_displ_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_ub_neg_displ_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code.. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[33795,1],3]
+  Exit code:    77
+--------------------------------------------------------------------------
+make[1]: *** [MPI_Type_ub_neg_displ_c] Error 77
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_ub_neg_displ_c
+++++ MPI_Type_free_types_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_free_types_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_free_types_f MPI_Type_free_types_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_free_types_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_free_types      
+MPITEST_results: MPI_Type_free_types all tests PASSED (       362)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_free_types_f
+++++ MPI_Type_ub_neg_displ_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_ub_neg_displ_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_ub_neg_displ_f MPI_Type_ub_neg_displ_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_ub_neg_displ_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code.. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[34244,1],5]
+  Exit code:    77
+--------------------------------------------------------------------------
+make[1]: *** [MPI_Type_ub_neg_displ_f] Error 77
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_ub_neg_displ_f
+++++ MPI_Type_hindexed_basic_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hindexed_basic_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hindexed_basic_c MPI_Type_hindexed_basic_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hindexed_basic_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_hindexed_basic test
+MPITEST_results: MPI_Type_hindexed_basic all tests PASSED (39096)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hindexed_basic_c
+++++ MPI_Type_ub_pos_displ_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_ub_pos_displ_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_ub_pos_displ_c MPI_Type_ub_pos_displ_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_ub_pos_displ_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code.. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[34303,1],5]
+  Exit code:    77
+--------------------------------------------------------------------------
+make[1]: *** [MPI_Type_ub_pos_displ_c] Error 77
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_ub_pos_displ_c
+++++ MPI_Type_hindexed_basic_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hindexed_basic_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hindexed_basic_f MPI_Type_hindexed_basic_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hindexed_basic_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_hindexed_basic  
+MPITEST_results: MPI_Type_hindexed_basic all tests PASSED (     39096)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hindexed_basic_f
+++++ MPI_Type_lb_MPI_LB_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_lb_MPI_LB_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_lb_MPI_LB_f MPI_Type_lb_MPI_LB_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_lb_MPI_LB_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_lb_MPI_LB       
+MPITEST_results: MPI_Type_lb_MPI_LB all tests PASSED (       612)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_lb_MPI_LB_f
+++++ MPI_Type_ub_pos_displ_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_ub_pos_displ_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_ub_pos_displ_f MPI_Type_ub_pos_displ_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_ub_pos_displ_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code.. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[34122,1],5]
+  Exit code:    77
+--------------------------------------------------------------------------
+make[1]: *** [MPI_Type_ub_pos_displ_f] Error 77
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_ub_pos_displ_f
+++++ MPI_Type_hindexed_blklen_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hindexed_blklen_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hindexed_blklen_c MPI_Type_hindexed_blklen_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hindexed_blklen_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_hindexed_blklen test
+MPITEST_results: MPI_Type_hindexed_blklen all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hindexed_blklen_c
+++++ MPI_Type_vector_basic_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_vector_basic_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_vector_basic_c MPI_Type_vector_basic_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_vector_basic_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_vector_basic test
+MPITEST_results: MPI_Type_vector_basic all tests PASSED (39096)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_vector_basic_c
+++++ MPI_Type_hindexed_blklen_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hindexed_blklen_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hindexed_blklen_f MPI_Type_hindexed_blklen_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hindexed_blklen_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_hindexed_blklen 
+MPITEST_results: MPI_Type_hindexed_blklen all tests PASSED (      1629)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hindexed_blklen_f
+++++ MPI_Type_lb_neg_displ_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_lb_neg_displ_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_lb_neg_displ_f MPI_Type_lb_neg_displ_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_lb_neg_displ_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code.. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[34500,1],5]
+  Exit code:    77
+--------------------------------------------------------------------------
+make[1]: *** [MPI_Type_lb_neg_displ_f] Error 77
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_lb_neg_displ_f
+++++ MPI_Type_vector_basic_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_vector_basic_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_vector_basic_f MPI_Type_vector_basic_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_vector_basic_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_vector_basic    
+MPITEST_results: MPI_Type_vector_basic all tests PASSED (     37105)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_vector_basic_f
+++++ MPI_Type_hindexed_displs_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hindexed_displs_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hindexed_displs_c MPI_Type_hindexed_displs_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hindexed_displs_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_hindexed_displs test
+MPITEST_results: MPI_Type_hindexed_displs all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hindexed_displs_c
+++++ MPI_Type_vector_blklen_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_vector_blklen_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_vector_blklen_c MPI_Type_vector_blklen_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_vector_blklen_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_vector_blklen test
+MPITEST_results: MPI_Type_vector_blklen all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_vector_blklen_c
+++++ MPI_Type_hindexed_displs_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hindexed_displs_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hindexed_displs_f MPI_Type_hindexed_displs_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hindexed_displs_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_hindexed_displs 
+MPITEST_results: MPI_Type_hindexed_displs all tests PASSED (      1629)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hindexed_displs_f
+++++ MPI_Type_lb_pos_displ_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_lb_pos_displ_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_lb_pos_displ_f MPI_Type_lb_pos_displ_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_lb_pos_displ_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code.. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[34376,1],3]
+  Exit code:    77
+--------------------------------------------------------------------------
+make[1]: *** [MPI_Type_lb_pos_displ_f] Error 77
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_lb_pos_displ_f
+++++ MPI_Type_vector_blklen_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_vector_blklen_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_vector_blklen_f MPI_Type_vector_blklen_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_vector_blklen_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_vector_blklen   
+MPITEST_results: MPI_Type_vector_blklen all tests PASSED (      1629)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_vector_blklen_f
+++++ MPI_Type_hindexed_types_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hindexed_types_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hindexed_types_c MPI_Type_hindexed_types_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hindexed_types_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_hindexed_types test
+MPITEST_results: MPI_Type_hindexed_types all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hindexed_types_c
+++++ MPI_Type_size_MPI_LB_UB_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_size_MPI_LB_UB_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_size_MPI_LB_UB_c MPI_Type_size_MPI_LB_UB_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_size_MPI_LB_UB_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_size_MPI_LB_UB test
+MPITEST_results: MPI_Type_size_MPI_LB_UB all tests PASSED (34)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_size_MPI_LB_UB_c
+++++ MPI_Type_vector_stride_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_vector_stride_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_vector_stride_c MPI_Type_vector_stride_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_vector_stride_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_vector_stride test
+MPITEST_results: MPI_Type_vector_stride all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_vector_stride_c
+++++ MPI_Type_hindexed_types_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hindexed_types_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hindexed_types_f MPI_Type_hindexed_types_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hindexed_types_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_hindexed_types  
+MPITEST_results: MPI_Type_hindexed_types all tests PASSED (       362)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hindexed_types_f
+++++ MPI_Type_size_MPI_LB_UB_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_size_MPI_LB_UB_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_size_MPI_LB_UB_f MPI_Type_size_MPI_LB_UB_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_size_MPI_LB_UB_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_size_MPI_LB_UB  
+MPITEST_results: MPI_Type_size_MPI_LB_UB all tests PASSED (        33)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_size_MPI_LB_UB_f
+++++ MPI_Type_vector_stride_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_vector_stride_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_vector_stride_f MPI_Type_vector_stride_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_vector_stride_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_vector_stride   
+MPITEST_results: MPI_Type_vector_stride all tests PASSED (      2172)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_vector_stride_f
+++++ MPI_Type_hvector_basic_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hvector_basic_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hvector_basic_c MPI_Type_hvector_basic_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hvector_basic_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_hvector_basic test
+MPITEST_results: MPI_Type_hvector_basic all tests PASSED (39096)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hvector_basic_c
+++++ MPI_Type_size_basic_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_size_basic_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_size_basic_c MPI_Type_size_basic_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_size_basic_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_size_basic test
+MPITEST_results: MPI_Type_size_basic all tests PASSED (442)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_size_basic_c
+++++ MPI_Type_vector_types_c
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_vector_types_c)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpicc -g -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_vector_types_c MPI_Type_vector_types_c.c libmpitest.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_vector_types_c
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+MPITEST info  (0): Starting MPI_Type_vector_types test
+MPITEST_results: MPI_Type_vector_types all tests PASSED (3258)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_vector_types_c
+++++ MPI_Type_hvector_basic_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_hvector_basic_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_hvector_basic_f MPI_Type_hvector_basic_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_hvector_basic_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_hvector_basic   
+MPITEST_results: MPI_Type_hvector_basic all tests PASSED (     37105)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_hvector_basic_f
+++++ MPI_Type_size_basic_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_size_basic_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_size_basic_f MPI_Type_size_basic_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_size_basic_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_size_basic      
+MPITEST_results: MPI_Type_size_basic all tests PASSED (       396)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_size_basic_f
+++++ MPI_Type_vector_types_f
+make[1]: Entering directory `/home/bosilca/ompi-tests/intel_tests'
+(cd src ; make MPI_Type_vector_types_f)
+make[2]: Entering directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpif77 -g -Isrc -I. -Isrc "-DOMPI_WANT_MPI_INTERFACE_WARNING=0" -o MPI_Type_vector_types_f MPI_Type_vector_types_f.F libmpitestf.o -lm
+make[2]: Leaving directory `/home/bosilca/ompi-tests/intel_tests/src'
+mpirun --bynode -np 8 --  `pwd`/src/MPI_Type_vector_types_f
+--------------------------------------------------------------------------
+The following command line options and corresponding MCA parameter have
+been deprecated and replaced as follows:
+
+  Command line options:
+    Deprecated:  --bynode, -bynode
+    Replacement: --map-by node
+
+  Equivalent MCA parameter:
+    Deprecated:  rmaps_base_bynode
+    Replacement: rmaps_base_mapping_policy=node
+
+The deprecated forms *will* disappear in a future version of Open MPI.
+Please update to the new syntax.
+--------------------------------------------------------------------------
+ MPITEST_INFO (         0): Starting test MPI_Type_vector_types    
+MPITEST_results: MPI_Type_vector_types all tests PASSED (       362)
+make[1]: Leaving directory `/home/bosilca/ompi-tests/intel_tests'
+---- MPI_Type_vector_types_f
+[[[ END OF TESTS ]]]
