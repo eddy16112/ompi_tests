@@ -5,6 +5,7 @@ CC = $(MPI_ROOT)/bin/mpicc
 SRC:= \
 	to_self.c	\
 	ddt_send_recv.c	\
+	datatype_send_recv.c	\
 	vector_send_recv.c	\
 	cuda_send_recv.c	\
 	hello_world.c		\
@@ -15,7 +16,7 @@ LIB = -I$(MPI_ROOT)/lib -lmpi -L/mnt/sw/cuda/lib64 -lcudart
 
 .PHONY: all clean
 
-all: to_self ddt_send_recv vector_send_recv cuda_send_recv hello_world
+all: to_self ddt_send_recv datatype_send_recv vector_send_recv cuda_send_recv hello_world
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
@@ -24,6 +25,9 @@ to_self: to_self.o
 	$(CC) $(CFLAGS) $(INC) $(LIB) $^ -o $@
 
 ddt_send_recv: ddt_send_recv.o
+	$(CC) $(CFLAGS) $(INC) $(LIB) $^ -o $@
+
+datatype_send_recv: datatype_send_recv.o
 	$(CC) $(CFLAGS) $(INC) $(LIB) $^ -o $@
 	
 vector_send_recv: vector_send_recv.o

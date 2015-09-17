@@ -37,8 +37,8 @@ MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS OR MODIFICATIONS.
 #include <stdio.h>
 #include <string.h>
 
-//#define CUDA_TEST
-//#define CUDA_TEST_G2G
+#define CUDA_TEST
+#define CUDA_TEST_G2G
 
 #define TRUE  1
 #define FALSE 0

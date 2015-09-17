@@ -177,8 +177,15 @@ int main(int argc, char **argv)
         printf("not support yet\n");
         return 1;
     }
+    printf("rank %d, pid %d\n", rank, getpid());
     sleep(15);
-    
+   
+    if (rank == 0) {
+        cudaSetDevice(2);
+    } else {
+        cudaSetDevice(2);
+    }
+
     /* upper triangular matrix */
     create_vector(count, blocklength, stride, &test_type);
     

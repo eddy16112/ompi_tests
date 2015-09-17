@@ -169,7 +169,12 @@ int main(int argc, char **argv)
         return 1;
     }
     printf("rank %d, pid %d\n", rank, getpid());
-    sleep(15);
+    sleep(10);
+    if (rank == 0) {
+        cudaSetDevice(0);
+    } else {
+        cudaSetDevice(0);
+    }
     
     /* upper triangular matrix */
     upper_matrix(length, &test_type);
@@ -205,6 +210,7 @@ int main(int argc, char **argv)
             MPI_Wait(&request, &status);
 #endif
         cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
+        cudaDeviceSynchronize();
         printf("WARMUP rank 0 RECEIVE!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC)
         ierr = MPI_Irecv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
@@ -237,7 +243,7 @@ int main(int argc, char **argv)
 #endif
 
             printf("rank 0 RECEIVE!!!!!!!!!!!!!!!!!\n");
-            cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
+    //        cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
 #if defined (MPI_ASYNC)
             ierr = MPI_Irecv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
 #else
@@ -270,6 +276,7 @@ int main(int argc, char **argv)
 #else
         buffer_pingpong = buffer_host;
 #endif
+        cudaDeviceSynchronize();
         for (i = 0; i < iterations+1; i++) {
             printf("rank 1 RECEIVE!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC)
@@ -298,7 +305,7 @@ int main(int argc, char **argv)
 #if defined (MPI_ASYNC)
             MPI_Wait(&request, &status);
 #endif
-            cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
+      //      cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
         }
     }
     

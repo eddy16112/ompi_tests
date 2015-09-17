@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
     fail = 0;
     loop_cnt = 0;
 
-    num_types = 2;//MPITEST_num_datatypes();
+    num_types = MPITEST_num_datatypes();
 
     /* Set up various arrays */
     types = (MPI_Datatype *) calloc(num_types, sizeof(MPI_Datatype));
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
     printf("rank %d, process id %d\n", wei_rank, getpid());
     sleep(15);
 
-    for (comm_count = 0; comm_count < 1/*MPITEST_num_comm_sizes()*/;
+    for (comm_count = 0; comm_count < MPITEST_num_comm_sizes();
          comm_count++) {
         comm_index = MPITEST_get_comm_index(comm_count);
         comm_type = MPITEST_get_comm_type(comm_count);
@@ -212,8 +212,8 @@ int main(int argc, char *argv[])
                 continue;
             }
 
-            for (length_count = 4;
-                 length_count < 5/*MPITEST_num_message_lengths()*/;
+            for (length_count = 0;
+                 length_count < MPITEST_num_message_lengths();
                  length_count++) {
                 byte_length = MPITEST_get_message_length(length_count);
 
