@@ -4,6 +4,7 @@
 #include <stdlib.h> 
 #include <string.h>
 #include <unistd.h>
+#include <assert.h>
 #include <cuda_runtime.h>
 
 
@@ -11,6 +12,7 @@
 #define DDT_INDEX_UP    2
 #define DDT_VEC         3
 #define DDT_CONT        4
+#define DDT_VEC_INDEX   5
 
 #define CUDA_TEST
 //#define MPI_ASYNC
@@ -420,19 +422,28 @@ int main(int argc, char **argv)
     printf("rank %d, pid %d\n", rank, getpid());
     sleep(10);
     if (rank == 0) {
-        cudaSetDevice(0);
+        cudaSetDevice(1);
     } else {
-        cudaSetDevice(0);
+        cudaSetDevice(2);
     }
     
    root_ddt = DDT_INDEX_LOW;
    dest_ddt = DDT_INDEX_UP;
     
-//    root_ddt = DDT_VEC;
-//    dest_ddt = DDT_VEC;
+ //        root_ddt = DDT_VEC;
+ //         dest_ddt = DDT_VEC;
     
-//    root_ddt = DDT_CONT;
-//    dest_ddt = DDT_CONT;
+ //                root_ddt = DDT_CONT;
+  //                      dest_ddt = DDT_CONT;
+       
+   //     root_ddt = DDT_INDEX_LOW;
+   //     dest_ddt = DDT_CONT;
+        
+    //    root_ddt = DDT_VEC;
+  //      dest_ddt = DDT_CONT;
+        
+      //  root_ddt = DDT_INDEX_LOW;
+      //  dest_ddt = DDT_VEC_INDEX;
     
    /* lower triangular matrix */
    if (root_ddt == DDT_INDEX_LOW) {
@@ -487,8 +498,17 @@ int main(int argc, char **argv)
         create_vector(length, 384, 512, &dest_type);
         dest_size = compute_buffer_length(dest_type, 1);
     } else if (dest_ddt == DDT_CONT) {
-        create_contiguous(length, &dest_type);
-        dest_size = sizeof(double)*length;
+        MPI_Type_size(root_type, &dest_size);
+        create_contiguous(dest_size/sizeof(double), &dest_type);
+        printf("dest size %ld\n", dest_size);
+        //dest_size = sizeof(double)*length;
+    } else if (dest_ddt = DDT_VEC_INDEX) {
+        size_t ddt_size;
+        MPI_Type_size(root_type, &ddt_size);
+        printf("dest size %ld\n", ddt_size);
+        assert(1000*2001*8 == ddt_size);
+        create_vector(1000, 2001, 2129, &dest_type);
+        dest_size = compute_buffer_length(dest_type, 1);
     }
     
     // receiver
