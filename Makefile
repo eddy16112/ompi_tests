@@ -1,4 +1,6 @@
-MPI_ROOT = /home-2/wwu/build-gpu
+#MPI_ROOT = /home-2/wwu/build-gpu
+MPI_ROOT = /home/wwu12/ompi/build-gpu
+CUDA_ROOT = /mnt/sw/cuda
 
 CC = $(MPI_ROOT)/bin/mpicc
 
@@ -11,8 +13,8 @@ SRC:= \
 	hello_world.c		\
 
 CFLAGS = -g
-INC = -I$(MPI_ROOT)/include -I/shared/apps/cuda/CUDA-v7.5.18/include
-LIB = -I$(MPI_ROOT)/lib -lmpi -L/shared/apps/cuda/CUDA-v7.5.18/lib64 -lcudart
+INC = -I$(MPI_ROOT)/include -I$(CUDA_ROOT)/include
+LIB = -I$(MPI_ROOT)/lib -lmpi -L$(CUDA_ROOT)/lib64 -lcudart
 
 .PHONY: all clean
 

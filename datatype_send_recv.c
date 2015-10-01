@@ -234,32 +234,32 @@ void parse_argv(int argc, char **argv, int *length, int *blocklength, int *strid
     opterr = 0;
     int c;
     
-    while ((c = getopt (argc, argv, "l:b:s:i")) != -1) {
+    while ((c = getopt (argc, argv, "l:b:s:i:")) != -1) {
         switch (c) {
-          case 'l':
-            *length = atoi(optarg);
-            break;
-          case 'b':
-            *blocklength = atoi(optarg);
-            break;
-          case 's':
-            *stride = atoi(optarg);
-            break;
-          case 'i':
-            *iter = atoi(optarg);
-            break;
-          case '?':
-            if (optopt == 'l' || optopt == 'i')
-              fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-            else if (isprint (optopt))
-              fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-            else
-              fprintf (stderr,"Unknown option character `\\x%x'.\n", optopt);
-            exit(1);
-          default:
-            exit(1);
-          }
-      }
+            case 'l':
+                *length = atoi(optarg);
+                break;
+            case 'b':
+                *blocklength = atoi(optarg);
+                break;
+            case 's':
+                *stride = atoi(optarg);
+                break;
+            case 'i':
+                *iter = atoi(optarg);
+                break;
+            case '?':
+                if (optopt == 'l' || optopt == 'b' || optopt == 's' || optopt == 'i')
+                    fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+                else if (isprint (optopt))
+                    fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+                else
+                    fprintf (stderr,"Unknown option character `\\x%x'.\n", optopt);
+                exit(1);
+            default:
+                exit(1);
+        }
+    }
 }
 
 void ping_pong(MPI_Datatype *test_type, size_t ddt_size, void *buffer_host, void *buffer_cuda, int dest)
@@ -401,6 +401,8 @@ int main(int argc, char **argv)
     stride = 0;
     
     parse_argv(argc, argv, &length, &blocklength, &stride, &iterations);
+    
+    printf("length %d, iter %d, blocklength %d, stride %d\n", length, iterations, blocklength, stride);
 
     if (length == 0) {
         length = 4000;
@@ -438,8 +440,8 @@ int main(int argc, char **argv)
    root_ddt = DDT_INDEX_LOW;
    dest_ddt = DDT_INDEX_LOW;
     
- //  root_ddt = DDT_VEC;
- //  dest_ddt = DDT_VEC;
+    root_ddt = DDT_VEC;
+    dest_ddt = DDT_VEC;
     
  //                root_ddt = DDT_CONT;
   //                      dest_ddt = DDT_CONT;
