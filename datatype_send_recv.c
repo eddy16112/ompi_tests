@@ -229,21 +229,27 @@ void verify_contiguous(double *vp, int count)
     }
 }
 
-void parse_argv(int argc, char **argv, int *length, int *iter)
+void parse_argv(int argc, char **argv, int *length, int *blocklength, int *stride, int *iter)
 {
     opterr = 0;
     int c;
     
-    while ((c = getopt (argc, argv, "s:i:")) != -1) {
+    while ((c = getopt (argc, argv, "l:b:s:i")) != -1) {
         switch (c) {
-          case 's':
+          case 'l':
             *length = atoi(optarg);
+            break;
+          case 'b':
+            *blocklength = atoi(optarg);
+            break;
+          case 's':
+            *stride = atoi(optarg);
             break;
           case 'i':
             *iter = atoi(optarg);
             break;
           case '?':
-            if (optopt == 's' || optopt == 'i')
+            if (optopt == 'l' || optopt == 'i')
               fprintf (stderr, "Option -%c requires an argument.\n", optopt);
             else if (isprint (optopt))
               fprintf (stderr, "Unknown option `-%c'.\n", optopt);
@@ -301,7 +307,7 @@ void ping_pong(MPI_Datatype *test_type, size_t ddt_size, void *buffer_host, void
         }
 
         printf("rank 0 RECEIVE!!!!!!!!!!!!!!!!!\n");
-        cudaMemset(buffer_cuda, 0, ddt_size);
+   //     cudaMemset(buffer_cuda, 0, ddt_size);
 
         ierr = MPI_Recv(buffer_pingpong, 1, *test_type, dest, tag, MPI_COMM_WORLD, &status);
         
@@ -363,7 +369,7 @@ void pong_ping(MPI_Datatype *test_type, size_t ddt_size, void *buffer_host, void
             printf("MPI_Send() returned %d", ierr);
         }
 
-        cudaMemset(buffer_cuda, 0, ddt_size);
+ //       cudaMemset(buffer_cuda, 0, ddt_size);
     }
 }
 
@@ -379,7 +385,7 @@ int main(int argc, char **argv)
     
     int rank, size;
     
-    int length, i;
+    int length, blocklength, stride, i;
     
     double *buffer_pingpong, *buffer_cuda, *buffer_host;
     
@@ -391,8 +397,10 @@ int main(int argc, char **argv)
 
     length = 0;
     iterations = 0;
+    blocklength = 0;
+    stride = 0;
     
-    parse_argv(argc, argv, &length, &iterations);
+    parse_argv(argc, argv, &length, &blocklength, &stride, &iterations);
 
     if (length == 0) {
         length = 4000;
@@ -420,18 +428,18 @@ int main(int argc, char **argv)
         return 1;
     }
     printf("rank %d, pid %d\n", rank, getpid());
-    sleep(10);
+    //sleep(10);
     if (rank == 0) {
         cudaSetDevice(1);
     } else {
-        cudaSetDevice(2);
+        cudaSetDevice(1);
     }
     
    root_ddt = DDT_INDEX_LOW;
-   dest_ddt = DDT_INDEX_UP;
+   dest_ddt = DDT_INDEX_LOW;
     
- //        root_ddt = DDT_VEC;
- //         dest_ddt = DDT_VEC;
+ //  root_ddt = DDT_VEC;
+ //  dest_ddt = DDT_VEC;
     
  //                root_ddt = DDT_CONT;
   //                      dest_ddt = DDT_CONT;
@@ -450,7 +458,7 @@ int main(int argc, char **argv)
        lower_matrix(length, &root_type);
        root_size = sizeof(double)*length*length;
    } else if (root_ddt == DDT_VEC) {
-       create_vector(length, 384, 512, &root_type);
+       create_vector(length, blocklength, stride, &root_type);
        root_size = compute_buffer_length(root_type, 1);
    } else if (root_ddt == DDT_CONT) {
        create_contiguous(length, &root_type);
@@ -469,7 +477,7 @@ int main(int argc, char **argv)
         if (root_ddt == DDT_INDEX_LOW) {
             fill_lower_matrix(buffer_host, length);
         } else if (root_ddt == DDT_VEC) {
-            fill_vectors(buffer_host, length, 384, 512);
+            fill_vectors(buffer_host, length, blocklength, stride);
         } else if (root_ddt == DDT_CONT) {
             fill_contiguous(buffer_host, length);
         }
@@ -479,7 +487,7 @@ int main(int argc, char **argv)
         if (root_ddt == DDT_INDEX_LOW) {
             verify_lower_mat_result(buffer_host, length);   
         } else if (root_ddt == DDT_VEC) {
-            verify_vectors(buffer_host, length, 384, 512); 
+            verify_vectors(buffer_host, length, blocklength, stride); 
         } else if (root_ddt == DDT_CONT) {
             verify_contiguous(buffer_host, length);
         }  
@@ -495,7 +503,7 @@ int main(int argc, char **argv)
         upper_matrix(length, &dest_type);
         dest_size = sizeof(double)*length*length;
     } else if (dest_ddt == DDT_VEC) {
-        create_vector(length, 384, 512, &dest_type);
+        create_vector(length, blocklength, stride, &dest_type);
         dest_size = compute_buffer_length(dest_type, 1);
     } else if (dest_ddt == DDT_CONT) {
         MPI_Type_size(root_type, &dest_size);
