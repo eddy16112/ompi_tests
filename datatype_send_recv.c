@@ -13,6 +13,8 @@
 #define DDT_VEC         3
 #define DDT_CONT        4
 #define DDT_VEC_INDEX   5
+#define DDT_MAT		6
+#define DDT_MAT_T	7
 
 #define CUDA_TEST
 //#define MPI_ASYNC
@@ -203,6 +205,7 @@ void create_contiguous(int count, MPI_Datatype *cont)
     if (ierr != MPI_SUCCESS) { 
         printf("MPI_Type_commit() returned %d", ierr);
     }
+    printf("contiguous created \n");
 }
 
 void fill_contiguous(double* vp, int count)
@@ -227,6 +230,24 @@ void verify_contiguous(double *vp, int count)
     } else {
         printf("no error is found\n");
     }
+}
+
+void create_mat_t(int length, MPI_Datatype *mat_t)
+{
+    int i, ierr;
+    MPI_Datatype column;
+
+    printf("inside mat t\n");
+    ierr = MPI_Type_vector(length, 1, length, MPI_DOUBLE, &column);;
+    if (ierr != MPI_SUCCESS) { 
+        printf("MPI_Type_vector() returned %d", ierr);
+    }
+    MPI_Type_hvector(length, 1, sizeof(double), column, mat_t);
+    ierr = MPI_Type_commit (mat_t);
+    if (ierr != MPI_SUCCESS) { 
+        printf("MPI_Type_commit() returned %d", ierr);
+    }
+    printf("mat t ddt created\n");
 }
 
 void parse_argv(int argc, char **argv, int *length, int *blocklength, int *stride, int *iter)
@@ -434,14 +455,14 @@ int main(int argc, char **argv)
     if (rank == 0) {
         cudaSetDevice(1);
     } else {
-        cudaSetDevice(1);
+        cudaSetDevice(2);
     }
     
    root_ddt = DDT_INDEX_LOW;
-   dest_ddt = DDT_INDEX_LOW;
+   dest_ddt = DDT_INDEX_UP;
     
-    root_ddt = DDT_VEC;
-    dest_ddt = DDT_VEC;
+   // root_ddt = DDT_VEC;
+   // dest_ddt = DDT_VEC;
     
  //                root_ddt = DDT_CONT;
   //                      dest_ddt = DDT_CONT;
@@ -450,11 +471,18 @@ int main(int argc, char **argv)
    //     dest_ddt = DDT_CONT;
         
     //    root_ddt = DDT_VEC;
-  //      dest_ddt = DDT_CONT;
+    //    dest_ddt = DDT_CONT;
         
       //  root_ddt = DDT_INDEX_LOW;
       //  dest_ddt = DDT_VEC_INDEX;
-    
+      //
+
+   root_ddt = DDT_MAT;
+   dest_ddt = DDT_MAT_T;
+   
+
+ //  root_ddt = DDT_CONT;
+ //  dest_ddt = DDT_CONT; 
    /* lower triangular matrix */
    if (root_ddt == DDT_INDEX_LOW) {
        lower_matrix(length, &root_type);
@@ -465,6 +493,9 @@ int main(int argc, char **argv)
    } else if (root_ddt == DDT_CONT) {
        create_contiguous(length, &root_type);
        root_size = sizeof(double)*length;
+   } else if (root_ddt == DDT_MAT) {
+       create_contiguous(length*length, &root_type);
+       root_size = sizeof(double)*length*length;
    }
     
     // sender
@@ -512,13 +543,18 @@ int main(int argc, char **argv)
         create_contiguous(dest_size/sizeof(double), &dest_type);
         printf("dest size %ld\n", dest_size);
         //dest_size = sizeof(double)*length;
-    } else if (dest_ddt = DDT_VEC_INDEX) {
+    } else if (dest_ddt == DDT_VEC_INDEX) {
         size_t ddt_size;
         MPI_Type_size(root_type, &ddt_size);
         printf("dest size %ld\n", ddt_size);
         assert(1000*2001*8 == ddt_size);
         create_vector(1000, 2001, 2129, &dest_type);
         dest_size = compute_buffer_length(dest_type, 1);
+    } else if (dest_ddt == DDT_MAT_T) {
+        printf("create mat t\n");
+        create_mat_t(length, &dest_type);
+        dest_size = sizeof(double)*length*length;
+        printf("mat t size %ld\n", dest_size); 
     }
     
     // receiver
