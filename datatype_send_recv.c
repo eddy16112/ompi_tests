@@ -232,22 +232,20 @@ void verify_contiguous(double *vp, int count)
     }
 }
 
-void create_mat_t(int length, MPI_Datatype *mat_t)
+void create_mat_t(int length, MPI_Datatype *matt)
 {
     int i, ierr;
     MPI_Datatype column;
 
-    printf("inside mat t\n");
-    ierr = MPI_Type_vector(length, 1, length, MPI_DOUBLE, &column);;
+    ierr = MPI_Type_vector(length, 1, length, MPI_DOUBLE, &column);
     if (ierr != MPI_SUCCESS) { 
         printf("MPI_Type_vector() returned %d", ierr);
     }
-    MPI_Type_hvector(length, 1, sizeof(double), column, mat_t);
-    ierr = MPI_Type_commit (mat_t);
+    MPI_Type_hvector(length, 1, sizeof(double), column, matt);
+    ierr = MPI_Type_commit (matt);
     if (ierr != MPI_SUCCESS) { 
         printf("MPI_Type_commit() returned %d", ierr);
     }
-    printf("mat t ddt created\n");
 }
 
 void parse_argv(int argc, char **argv, int *length, int *blocklength, int *stride, int *iter)
@@ -455,7 +453,7 @@ int main(int argc, char **argv)
     if (rank == 0) {
         cudaSetDevice(1);
     } else {
-        cudaSetDevice(2);
+        cudaSetDevice(1);
     }
     
    root_ddt = DDT_INDEX_LOW;
@@ -496,7 +494,11 @@ int main(int argc, char **argv)
    } else if (root_ddt == DDT_MAT) {
        create_contiguous(length*length, &root_type);
        root_size = sizeof(double)*length*length;
-   }
+   } else if (root_ddt == DDT_MAT_T) {
+        create_mat_t(length, &root_type);
+        root_size = sizeof(double)*length*length;
+        printf("mat t size %ld\n", root_size);
+    }
     
     // sender
     if (rank == root) {
@@ -513,6 +515,8 @@ int main(int argc, char **argv)
             fill_vectors(buffer_host, length, blocklength, stride);
         } else if (root_ddt == DDT_CONT) {
             fill_contiguous(buffer_host, length);
+        } else if (root_ddt == DDT_MAT) {
+            fill_contiguous(buffer_host, length*length);
         }
         
         ping_pong(&root_type, root_size, buffer_host, buffer_cuda, dest);
@@ -523,7 +527,9 @@ int main(int argc, char **argv)
             verify_vectors(buffer_host, length, blocklength, stride); 
         } else if (root_ddt == DDT_CONT) {
             verify_contiguous(buffer_host, length);
-        }  
+        } else if (root_ddt == DDT_MAT) {
+            verify_contiguous(buffer_host, length*length);
+        } 
         
     }
     

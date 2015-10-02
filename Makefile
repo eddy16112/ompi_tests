@@ -1,7 +1,7 @@
-MPI_ROOT = /home-2/wwu/build-gpu
-#MPI_ROOT = /home/wwu12/ompi/build-gpu
-CUDA_ROOT = /shared/apps/cuda/CUDA-v7.5.18
-#CUDA_ROOT = /mnt/sw/cuda
+#MPI_ROOT = /home-2/wwu/build-gpu
+MPI_ROOT = /home/wwu12/ompi/build-gpu
+#CUDA_ROOT = /shared/apps/cuda/CUDA-v7.5.18
+CUDA_ROOT = /mnt/sw/cuda
 
 CC = $(MPI_ROOT)/bin/mpicc
 
