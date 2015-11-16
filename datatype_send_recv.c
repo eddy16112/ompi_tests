@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include <cuda_runtime.h>
+#include <dlfcn.h>
 
 
 #define DDT_INDEX_LOW   1
@@ -21,6 +22,23 @@
 
 static int *displs, *blklens;
 int iterations;
+int nb_ddt;
+
+int launch_kernel()
+{
+    int (*launch_p)();
+    void *handle = dlopen ("liboccupy_test4.so", RTLD_LAZY);
+    if (handle != NULL) {
+         printf("+++++++++++++++++++++++++++++++++load lib success\n");
+    }
+    launch_p = NULL;
+    launch_p = dlsym(handle, "launch_my_kernel");
+    if (launch_p != NULL) {
+//        launch_p();
+        printf("+++++++++++++++++++++++++++++++++load success\n");
+    }
+    return 0;
+}
 
 size_t compute_buffer_length(MPI_Datatype pdt, int count)
 {
@@ -131,8 +149,8 @@ static void verify_lower_mat_result(double *mat, int mat_size)
         printf("no error is found\n");
     }
     
-    free( displs );
-    free( blklens );
+//    free( displs );
+//    free( blklens );
 }
 
 void create_vector(int count, int blocklength, int stride, MPI_Datatype *vector)
@@ -253,7 +271,7 @@ void parse_argv(int argc, char **argv, int *length, int *blocklength, int *strid
     opterr = 0;
     int c;
     
-    while ((c = getopt (argc, argv, "l:b:s:i:")) != -1) {
+    while ((c = getopt (argc, argv, "l:b:s:i:n:")) != -1) {
         switch (c) {
             case 'l':
                 *length = atoi(optarg);
@@ -267,8 +285,11 @@ void parse_argv(int argc, char **argv, int *length, int *blocklength, int *strid
             case 'i':
                 *iter = atoi(optarg);
                 break;
+            case 'n':
+                nb_ddt = atoi(optarg);
+                break;
             case '?':
-                if (optopt == 'l' || optopt == 'b' || optopt == 's' || optopt == 'i')
+                if (optopt == 'l' || optopt == 'b' || optopt == 's' || optopt == 'i' || optopt == 'n')
                     fprintf (stderr, "Option -%c requires an argument.\n", optopt);
                 else if (isprint (optopt))
                     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
@@ -291,44 +312,46 @@ void ping_pong(MPI_Datatype *test_type, size_t ddt_size, void *buffer_host, void
     int i;
     
 #if defined (CUDA_TEST)
-    cudaMemset(buffer_cuda, 0, ddt_size);
+    cudaMemset(buffer_cuda, 0, ddt_size*nb_ddt);
     buffer_pingpong = buffer_cuda;
-    cudaMemcpy(buffer_cuda, buffer_host, ddt_size, cudaMemcpyHostToDevice);
+    cudaMemcpy(buffer_cuda, buffer_host, ddt_size*nb_ddt, cudaMemcpyHostToDevice);
 #else
     buffer_pingpong = buffer_host;
 #endif
     /* warm up */
     printf("WARM UP rank 0 SEND!!!!!!!!!!!!!!!!!\n");
-    ierr = MPI_Send(buffer_pingpong, 1, *test_type, dest, tag, MPI_COMM_WORLD);
+    ierr = MPI_Send(buffer_pingpong, nb_ddt, *test_type, dest, tag, MPI_COMM_WORLD);
 
     if (ierr != MPI_SUCCESS) {
         printf("MPI_Send() returned %d", ierr);
     }
         
-    cudaMemset(buffer_cuda, 0, ddt_size);
+    cudaMemset(buffer_cuda, 0, ddt_size*nb_ddt);
     printf("WARMUP rank 0 RECEIVE!!!!!!!!!!!!!!!!!\n");
 
-    ierr = MPI_Recv(buffer_pingpong, 1, *test_type, dest, tag, MPI_COMM_WORLD, &status);
+    ierr = MPI_Recv(buffer_pingpong, nb_ddt, *test_type, dest, tag, MPI_COMM_WORLD, &status);
 
     if (ierr != MPI_SUCCESS) {
         printf("MPI_Recv() returned %d", ierr);
     }
     cudaDeviceSynchronize();
     MPI_Barrier(MPI_COMM_WORLD);
+    launch_kernel();
 
     t1 = MPI_Wtime();
     for (i = 0; i < iterations; i++) {
         printf("rank 0 SEND!!!!!!!!!!!!!!!!!\n");
-        ierr = MPI_Send(buffer_pingpong, 1, *test_type, dest, tag, MPI_COMM_WORLD);
+        ierr = MPI_Send(buffer_pingpong, nb_ddt, *test_type, dest, tag, MPI_COMM_WORLD);
 
         if (ierr != MPI_SUCCESS) {
             printf("MPI_Send() returned %d", ierr);
         }
 
         printf("rank 0 RECEIVE!!!!!!!!!!!!!!!!!\n");
-   //     cudaMemset(buffer_cuda, 0, ddt_size);
+        cudaMemset(buffer_cuda, 0, ddt_size);
+        cudaDeviceSynchronize();
 
-        ierr = MPI_Recv(buffer_pingpong, 1, *test_type, dest, tag, MPI_COMM_WORLD, &status);
+        ierr = MPI_Recv(buffer_pingpong, nb_ddt, *test_type, dest, tag, MPI_COMM_WORLD, &status);
         
         if (ierr != MPI_SUCCESS) {
             printf("MPI_Recv() returned %d", ierr);
@@ -338,7 +361,7 @@ void ping_pong(MPI_Datatype *test_type, size_t ddt_size, void *buffer_host, void
     printf("root send&recv time %f\n", (t2-t1)*1e6/iterations);
     /* pop out to verify result */
 #if defined (CUDA_TEST)
-    cudaMemcpy(buffer_host, buffer_cuda, ddt_size, cudaMemcpyDeviceToHost);
+    cudaMemcpy(buffer_host, buffer_cuda, ddt_size*nb_ddt, cudaMemcpyDeviceToHost);
 #endif
     
 }
@@ -352,43 +375,45 @@ void pong_ping(MPI_Datatype *test_type, size_t ddt_size, void *buffer_host, void
     int i;
     
 #if defined (CUDA_TEST)
-    cudaMemset(buffer_cuda, 0, ddt_size);
+    cudaMemset(buffer_cuda, 0, ddt_size*nb_ddt);
     buffer_pingpong = buffer_cuda;
 #else
     buffer_pingpong = buffer_host;
 #endif
     printf("rank 1 RECEIVE!!!!!!!!!!!!!!!!!\n");
-    ierr = MPI_Recv(buffer_pingpong, 1, *test_type, src, tag, MPI_COMM_WORLD, &status);
+    ierr = MPI_Recv(buffer_pingpong, nb_ddt, *test_type, src, tag, MPI_COMM_WORLD, &status);
     if (ierr != MPI_SUCCESS) {
         printf("MPI_Recv() returned %d", ierr);
     }
 
     printf("rank 1 SEND!!!!!!!!!!!!!!!!!\n");
-    ierr = MPI_Send(buffer_pingpong, 1, *test_type, src, tag, MPI_COMM_WORLD);
+    ierr = MPI_Send(buffer_pingpong, nb_ddt, *test_type, src, tag, MPI_COMM_WORLD);
 
     if (ierr != MPI_SUCCESS) {
         printf("MPI_Send() returned %d", ierr);
     }
 
-    cudaMemset(buffer_cuda, 0, ddt_size);
+    cudaMemset(buffer_cuda, 0, ddt_size*nb_ddt);
     cudaDeviceSynchronize();
     MPI_Barrier(MPI_COMM_WORLD);
+    launch_kernel();
     
     for (i = 0; i < iterations; i++) {
         printf("rank 1 RECEIVE!!!!!!!!!!!!!!!!!\n");
-        ierr = MPI_Recv(buffer_pingpong, 1, *test_type, src, tag, MPI_COMM_WORLD, &status);
+        ierr = MPI_Recv(buffer_pingpong, nb_ddt, *test_type, src, tag, MPI_COMM_WORLD, &status);
         if (ierr != MPI_SUCCESS) {
             printf("MPI_Recv() returned %d", ierr);
         }
 
         printf("rank 1 SEND!!!!!!!!!!!!!!!!!\n");
-        ierr = MPI_Send(buffer_pingpong, 1, *test_type, src, tag, MPI_COMM_WORLD);
+        ierr = MPI_Send(buffer_pingpong, nb_ddt, *test_type, src, tag, MPI_COMM_WORLD);
 
         if (ierr != MPI_SUCCESS) {
             printf("MPI_Send() returned %d", ierr);
         }
 
- //       cudaMemset(buffer_cuda, 0, ddt_size);
+        cudaMemset(buffer_cuda, 0, ddt_size*nb_ddt);
+        cudaDeviceSynchronize();
     }
 }
 
@@ -406,18 +431,22 @@ int main(int argc, char **argv)
     
     int length, blocklength, stride, i;
     
-    double *buffer_pingpong, *buffer_cuda, *buffer_host;
+    double *buffer_pingpong, *buffer_cuda, *buffer_host, *buffer_host_tmp;
     
     int root, dest;
     
     size_t root_size, dest_size;
     
     int root_ddt, dest_ddt;
+    
+    int j;
+    MPI_Aint extent;
 
     length = 0;
     iterations = 0;
     blocklength = 0;
     stride = 0;
+    nb_ddt = 1;
     
     parse_argv(argc, argv, &length, &blocklength, &stride, &iterations);
     
@@ -453,30 +482,30 @@ int main(int argc, char **argv)
     if (rank == 0) {
         cudaSetDevice(1);
     } else {
-        cudaSetDevice(1);
+        cudaSetDevice(2);
     }
     
    root_ddt = DDT_INDEX_LOW;
    dest_ddt = DDT_INDEX_UP;
     
-   // root_ddt = DDT_VEC;
-   // dest_ddt = DDT_VEC;
+    //root_ddt = DDT_VEC;
+    //dest_ddt = DDT_VEC;
     
- //                root_ddt = DDT_CONT;
+//                 root_ddt = DDT_CONT;
   //                      dest_ddt = DDT_CONT;
        
-   //     root_ddt = DDT_INDEX_LOW;
-   //     dest_ddt = DDT_CONT;
+//         root_ddt = DDT_INDEX_LOW;
+//         dest_ddt = DDT_CONT;
         
-    //    root_ddt = DDT_VEC;
-    //    dest_ddt = DDT_CONT;
+//        root_ddt = DDT_VEC;
+//        dest_ddt = DDT_CONT;
         
       //  root_ddt = DDT_INDEX_LOW;
       //  dest_ddt = DDT_VEC_INDEX;
       //
 
-   root_ddt = DDT_MAT;
-   dest_ddt = DDT_MAT_T;
+  // root_ddt = DDT_MAT;
+  // dest_ddt = DDT_MAT_T;
    
 
  //  root_ddt = DDT_CONT;
@@ -485,6 +514,7 @@ int main(int argc, char **argv)
    if (root_ddt == DDT_INDEX_LOW) {
        lower_matrix(length, &root_type);
        root_size = sizeof(double)*length*length;
+       printf("mat t size %ld\n", root_size);
    } else if (root_ddt == DDT_VEC) {
        create_vector(length, blocklength, stride, &root_type);
        root_size = compute_buffer_length(root_type, 1);
@@ -503,14 +533,19 @@ int main(int argc, char **argv)
     // sender
     if (rank == root) {
 
-        cudaMallocHost((void **)&buffer_host, root_size);
+        cudaMallocHost((void **)&buffer_host, root_size*nb_ddt);
 #if defined (CUDA_TEST)    
-        cudaMalloc((void **)&buffer_cuda, root_size);
+        cudaMalloc((void **)&buffer_cuda, root_size*nb_ddt);
 #endif
-        memset(buffer_host, 0, root_size);
+        memset(buffer_host, 0, root_size*nb_ddt);
         
         if (root_ddt == DDT_INDEX_LOW) {
-            fill_lower_matrix(buffer_host, length);
+            MPI_Type_extent(root_type, &extent);
+            buffer_host_tmp = buffer_host;
+            for (j = 0; j < nb_ddt; j++) {
+                fill_lower_matrix(buffer_host_tmp, length);
+                buffer_host_tmp += root_size/sizeof(double);
+            }
         } else if (root_ddt == DDT_VEC) {
             fill_vectors(buffer_host, length, blocklength, stride);
         } else if (root_ddt == DDT_CONT) {
@@ -522,7 +557,12 @@ int main(int argc, char **argv)
         ping_pong(&root_type, root_size, buffer_host, buffer_cuda, dest);
 
         if (root_ddt == DDT_INDEX_LOW) {
-            verify_lower_mat_result(buffer_host, length);   
+            MPI_Type_extent(root_type, &extent);
+            buffer_host_tmp = buffer_host;
+            for (j = 0; j < nb_ddt; j++) {
+                verify_lower_mat_result(buffer_host_tmp, length);
+                buffer_host_tmp += root_size/sizeof(double);
+            }   
         } else if (root_ddt == DDT_VEC) {
             verify_vectors(buffer_host, length, blocklength, stride); 
         } else if (root_ddt == DDT_CONT) {
@@ -536,11 +576,11 @@ int main(int argc, char **argv)
     if (dest_ddt == DDT_INDEX_LOW) {
         /* lower triangular matrix */
         lower_matrix(length, &dest_type);
-        dest_size = sizeof(double)*length*length;
+        dest_size = sizeof(double)*length*length*nb_ddt;
     } else if (dest_ddt == DDT_INDEX_UP){
         /* upper triangular matrix */
         upper_matrix(length, &dest_type);
-        dest_size = sizeof(double)*length*length;
+        dest_size = sizeof(double)*length*length*nb_ddt;
     } else if (dest_ddt == DDT_VEC) {
         create_vector(length, blocklength, stride, &dest_type);
         dest_size = compute_buffer_length(dest_type, 1);
@@ -566,12 +606,12 @@ int main(int argc, char **argv)
     // receiver
     if (rank == dest) {
         
-        cudaMallocHost((void **)&buffer_host, dest_size);
+        cudaMallocHost((void **)&buffer_host, dest_size*nb_ddt);
     #if defined (CUDA_TEST)    
-        cudaMalloc((void **)&buffer_cuda, dest_size);
+        cudaMalloc((void **)&buffer_cuda, dest_size*nb_ddt);
     #endif
         /* receive */
-        memset(buffer_host, 0, dest_size);
+        memset(buffer_host, 0, dest_size*nb_ddt);
         pong_ping(&dest_type, dest_size, buffer_host, buffer_cuda, root);
 
     }

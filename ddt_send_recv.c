@@ -7,7 +7,7 @@
 #include <cuda_runtime.h>
 
 #define CUDA_TEST
-//#define MPI_ASYNC
+#define MPI_ASYNC
 
 static int *displs, *blklens;
 
@@ -199,6 +199,7 @@ int main(int argc, char **argv)
         printf("WARM UP rank 0 SEND!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC) 
         ierr = MPI_Isend(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
+        ierr = MPI_Isend(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
 #else
         ierr = MPI_Send(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD);
 //        ierr = MPI_Send(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD);
@@ -213,6 +214,7 @@ int main(int argc, char **argv)
         cudaDeviceSynchronize();
         printf("WARMUP rank 0 RECEIVE!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC)
+        ierr = MPI_Irecv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
         ierr = MPI_Irecv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
 #else
         ierr = MPI_Recv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &status);
@@ -230,6 +232,7 @@ int main(int argc, char **argv)
             printf("rank 0 SEND!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC)
             ierr = MPI_Isend(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
+            ierr = MPI_Isend(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
 #else
             ierr = MPI_Send(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD);
  //           ierr = MPI_Send(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD);
@@ -245,6 +248,7 @@ int main(int argc, char **argv)
             printf("rank 0 RECEIVE!!!!!!!!!!!!!!!!!\n");
     //        cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
 #if defined (MPI_ASYNC)
+            ierr = MPI_Irecv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
             ierr = MPI_Irecv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
 #else
             ierr = MPI_Recv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &status);
@@ -281,6 +285,7 @@ int main(int argc, char **argv)
             printf("rank 1 RECEIVE!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC)
             ierr = MPI_Irecv(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &request);
+            ierr = MPI_Irecv(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &request);
 #else
             ierr = MPI_Recv(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &status);
   //          ierr = MPI_Recv(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &status);
@@ -294,6 +299,7 @@ int main(int argc, char **argv)
 //            cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
             printf("rank 1 SEND!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC)
+            ierr = MPI_Isend(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &request);
             ierr = MPI_Isend(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &request);
 #else
             ierr = MPI_Send(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD);
