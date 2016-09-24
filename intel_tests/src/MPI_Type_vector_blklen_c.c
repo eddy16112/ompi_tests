@@ -140,6 +140,11 @@ int main(int argc, char *argv[])
         MPITEST_message(MPITEST_INFO0, info_buf);
     }
 
+    int wei_rank;
+    MPI_Comm_rank (MPI_COMM_WORLD, &wei_rank);
+    printf("rank %d, process id %d\n", wei_rank, getpid());
+    sleep(15);
+
     /* set the global error counter */
     fail = 0;
     loop_cnt = 0;

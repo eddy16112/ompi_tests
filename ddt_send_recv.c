@@ -4,6 +4,7 @@
 #include <stdlib.h> 
 #include <string.h>
 #include <unistd.h>
+#include <assert.h>
 #include <cuda_runtime.h>
 
 #define CUDA_TEST
@@ -80,12 +81,13 @@ static void verify_mat_result(double *mat, int mat_size)
 
     if (error != 0) {
         printf("error is found %d\n", error);
+        assert(0);
     } else {
         printf("no error is found\n");
     }
     
-    free( displs );
-    free( blklens );
+  //  free( displs );
+  //  free( blklens );
 }
 
 void parse_argv(int argc, char **argv, int *length, int *iter)
@@ -121,7 +123,8 @@ int main(int argc, char **argv)
     
     MPI_Status status;
 #if defined (MPI_ASYNC) 
-    MPI_Request request;
+    MPI_Request request[10];
+    MPI_Status req_status[10];
 #endif
     
     MPI_Datatype test_type;
@@ -130,16 +133,19 @@ int main(int argc, char **argv)
     
     int rank, size;
     
-    int length, iterations, i;
+    int length, iterations, i, j;
     
-    double *buffer_pingpong, *buffer_cuda, *buffer_host;
+    double *buffer_pingpong[10], *buffer_cuda[10], *buffer_host;
     
     int root, dest;
     
     double t1, t2;
+    
+    int nb_send;
 
     length = 0;
     iterations = 0;
+    nb_send = 4;
     
     parse_argv(argc, argv, &length, &iterations);
 
@@ -173,15 +179,17 @@ int main(int argc, char **argv)
     if (rank == 0) {
         cudaSetDevice(0);
     } else {
-        cudaSetDevice(0);
+        cudaSetDevice(1);
     }
     
     /* upper triangular matrix */
     upper_matrix(length, &test_type);
     
     cudaMallocHost((void **)&buffer_host, sizeof(double)*length*length);
-#if defined (CUDA_TEST)    
-    cudaMalloc((void **)&buffer_cuda, sizeof(double)*length*length);
+#if defined (CUDA_TEST)
+    for (i = 0; i < nb_send; i++) {    
+        cudaMalloc((void **)&buffer_cuda[i], sizeof(double)*length*length);
+    }
 #endif
     
     if (rank == root) {
@@ -189,52 +197,61 @@ int main(int argc, char **argv)
         memset(buffer_host, 0, sizeof(double)*length*length);
         fill_upper_matrix(buffer_host, length);
 #if defined (CUDA_TEST)
-        cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
-        buffer_pingpong = buffer_cuda;
-        cudaMemcpy(buffer_cuda, buffer_host, sizeof(double)*length*length, cudaMemcpyHostToDevice);
+        for (i = 0; i < nb_send; i++) {   
+            cudaMemset(buffer_cuda[i], 0, sizeof(double)*length*length);
+            buffer_pingpong[i] = buffer_cuda[i];
+            cudaMemcpy(buffer_cuda[i], buffer_host, sizeof(double)*length*length, cudaMemcpyHostToDevice);
+        }
 #else
-        buffer_pingpong = buffer_host;
+        buffer_pingpong[0] = buffer_host;
 #endif
         /* warm up */
         printf("WARM UP rank 0 SEND!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC) 
-        ierr = MPI_Isend(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
-        ierr = MPI_Isend(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
+        for (i = 0; i < nb_send; i++) {   
+            ierr = MPI_Isend(buffer_pingpong[i], 1, test_type, dest, i, MPI_COMM_WORLD, &request[i]);
+        }
 #else
-        ierr = MPI_Send(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD);
+        ierr = MPI_Send(buffer_pingpong[0], 1, test_type, dest, tag, MPI_COMM_WORLD);
 //        ierr = MPI_Send(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD);
 #endif
         if (ierr != MPI_SUCCESS) {
             printf("MPI_Send() returned %d", ierr);
         }
 #if defined (MPI_ASYNC)
-            MPI_Wait(&request, &status);
+        MPI_Waitall(nb_send, request, req_status);
+	    MPI_Barrier(MPI_COMM_WORLD);
 #endif
-        cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
+        for (i = 0; i < nb_send; i++) {   
+            cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
+        }
         cudaDeviceSynchronize();
         printf("WARMUP rank 0 RECEIVE!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC)
-        ierr = MPI_Irecv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
-        ierr = MPI_Irecv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
+        for (i = 0; i < nb_send; i++) {   
+            ierr = MPI_Irecv(buffer_pingpong[i], 1, test_type, dest, i, MPI_COMM_WORLD, &request[i]);
+        }
 #else
-        ierr = MPI_Recv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &status);
+        ierr = MPI_Recv(buffer_pingpong[0], 1, test_type, dest, tag, MPI_COMM_WORLD, &status);
  //       ierr = MPI_Recv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &status);
 #endif
         if (ierr != MPI_SUCCESS) {
             printf("MPI_Recv() returned %d", ierr);
         }
 #if defined (MPI_ASYNC)
-        MPI_Wait(&request, &status);
+        MPI_Waitall(nb_send, request, req_status);
+	MPI_Barrier(MPI_COMM_WORLD);
 #endif
 
         t1 = MPI_Wtime();
         for (i = 0; i < iterations; i++) {
             printf("rank 0 SEND!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC)
-            ierr = MPI_Isend(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
-            ierr = MPI_Isend(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
+            for (j = 0; j < nb_send; j++) {   
+                ierr = MPI_Isend(buffer_pingpong[j], 1, test_type, dest, j, MPI_COMM_WORLD, &request[j]);
+            }
 #else
-            ierr = MPI_Send(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD);
+            ierr = MPI_Send(buffer_pingpong[0], 1, test_type, dest, tag, MPI_COMM_WORLD);
  //           ierr = MPI_Send(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD);
 #endif
             if (ierr != MPI_SUCCESS) {
@@ -242,32 +259,39 @@ int main(int argc, char **argv)
             }
 
 #if defined (MPI_ASYNC)
-            MPI_Wait(&request, &status);
+            MPI_Waitall(nb_send, request, req_status);
+	        MPI_Barrier(MPI_COMM_WORLD);
 #endif
 
             printf("rank 0 RECEIVE!!!!!!!!!!!!!!!!!\n");
     //        cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
 #if defined (MPI_ASYNC)
-            ierr = MPI_Irecv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
-            ierr = MPI_Irecv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &request);
+            for (j = 0; j < nb_send; j++) {   
+                ierr = MPI_Irecv(buffer_pingpong[j], 1, test_type, dest, j, MPI_COMM_WORLD, &request[j]);
+            }
 #else
-            ierr = MPI_Recv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &status);
+            ierr = MPI_Recv(buffer_pingpong[0], 1, test_type, dest, tag, MPI_COMM_WORLD, &status);
  //           ierr = MPI_Recv(buffer_pingpong, 1, test_type, dest, tag, MPI_COMM_WORLD, &status);
 #endif
             if (ierr != MPI_SUCCESS) {
                 printf("MPI_Recv() returned %d", ierr);
             }
 #if defined (MPI_ASYNC)
-            MPI_Wait(&request, &status);
+            MPI_Waitall(nb_send, request, req_status);
+	        MPI_Barrier(MPI_COMM_WORLD);
 #endif
         }
         t2 = MPI_Wtime();
         printf("root send&recv time %f\n", (t2-t1)*1e6/iterations);
         /* verify result */
 #if defined (CUDA_TEST)
-        cudaMemcpy(buffer_host, buffer_cuda, sizeof(double)*length*length, cudaMemcpyDeviceToHost);
-#endif
-        verify_mat_result(buffer_host, length);        
+        for (j = 0; j < nb_send; j++) {   
+            cudaMemcpy(buffer_host, buffer_cuda[j], sizeof(double)*length*length, cudaMemcpyDeviceToHost);
+            verify_mat_result(buffer_host, length);
+        }
+#else
+        verify_mat_result(buffer_host, length);
+#endif      
         
     }
     
@@ -275,41 +299,48 @@ int main(int argc, char **argv)
         /* receive */
         memset(buffer_host, 0, sizeof(double)*length*length);
 #if defined (CUDA_TEST)
-        cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
-        buffer_pingpong = buffer_cuda;
+        for (i = 0; i < nb_send; i++) {   
+            cudaMemset(buffer_cuda[i], 0, sizeof(double)*length*length);
+            buffer_pingpong[i] = buffer_cuda[i];
+        }
+
 #else
-        buffer_pingpong = buffer_host;
+        buffer_pingpong[0] = buffer_host;
 #endif
         cudaDeviceSynchronize();
         for (i = 0; i < iterations+1; i++) {
             printf("rank 1 RECEIVE!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC)
-            ierr = MPI_Irecv(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &request);
-            ierr = MPI_Irecv(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &request);
+            for (j = 0; j < nb_send; j++) {   
+                ierr = MPI_Irecv(buffer_pingpong[j], 1, test_type, root, j, MPI_COMM_WORLD, &request[j]);
+            }
 #else
-            ierr = MPI_Recv(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &status);
+            ierr = MPI_Recv(buffer_pingpong[0], 1, test_type, root, tag, MPI_COMM_WORLD, &status);
   //          ierr = MPI_Recv(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &status);
 #endif
             if (ierr != MPI_SUCCESS) {
                 printf("MPI_Recv() returned %d", ierr);
             }
 #if defined (MPI_ASYNC)
-            MPI_Wait(&request, &status);
+            MPI_Waitall(nb_send, request, req_status);
+	        MPI_Barrier(MPI_COMM_WORLD);
 #endif
 //            cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
             printf("rank 1 SEND!!!!!!!!!!!!!!!!!\n");
 #if defined (MPI_ASYNC)
-            ierr = MPI_Isend(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &request);
-            ierr = MPI_Isend(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD, &request);
+            for (j = 0; j < nb_send; j++) {   
+                ierr = MPI_Isend(buffer_pingpong[j], 1, test_type, root, j, MPI_COMM_WORLD, &request[j]);
+            }
 #else
-            ierr = MPI_Send(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD);
+            ierr = MPI_Send(buffer_pingpong[0], 1, test_type, root, tag, MPI_COMM_WORLD);
  //           ierr = MPI_Send(buffer_pingpong, 1, test_type, root, tag, MPI_COMM_WORLD);
 #endif
             if (ierr != MPI_SUCCESS) {
                 printf("MPI_Send() returned %d", ierr);
             }
 #if defined (MPI_ASYNC)
-            MPI_Wait(&request, &status);
+            MPI_Waitall(nb_send, request, req_status);
+	        MPI_Barrier(MPI_COMM_WORLD);
 #endif
       //      cudaMemset(buffer_cuda, 0, sizeof(double)*length*length);
         }
@@ -320,7 +351,9 @@ int main(int argc, char **argv)
     if (ierr != MPI_SUCCESS) {
         printf("MPI_Type_free() returned %d", ierr);
     }
-    cudaFree(buffer_cuda);
+    for (j = 0; j < nb_send; j++) {   
+        cudaFree(buffer_cuda[j]);
+    }
     cudaFreeHost(buffer_host);
     MPI_Finalize();
     return 0;

@@ -6,15 +6,15 @@
 #include <unistd.h>
 #include <cuda_runtime.h>
 
-#define CUDA_TEST
+//#define CUDA_TEST
 //#define MPI_ASYNC
 
-void parse_argv(int argc, char **argv, int *length, int *iter)
+void parse_argv(int argc, char **argv, int *length, int *iter, int *flag)
 {
     opterr = 0;
     int c;
     
-    while ((c = getopt (argc, argv, "s:i:")) != -1) {
+    while ((c = getopt (argc, argv, "s:i:f:")) != -1) {
         switch (c) {
           case 's':
             *length = atoi(optarg);
@@ -22,8 +22,11 @@ void parse_argv(int argc, char **argv, int *length, int *iter)
           case 'i':
             *iter = atoi(optarg);
             break;
+          case 'f':
+            *flag = atoi(optarg);
+            break;
           case '?':
-            if (optopt == 's' || optopt == 'i')
+            if (optopt == 's' || optopt == 'i' || optopt == 'f')
               fprintf (stderr, "Option -%c requires an argument.\n", optopt);
             else if (isprint (optopt))
               fprintf (stderr, "Unknown option `-%c'.\n", optopt);
@@ -49,7 +52,7 @@ int main(int argc, char **argv)
     
     int rank, size;
     
-    int length, iterations, i;
+    int length, iterations, i, flags;
     
     double *buffer_pingpong, *buffer_cuda, *buffer_host;
     
@@ -59,8 +62,9 @@ int main(int argc, char **argv)
 
     length = 0;
     iterations = 0;
+    flags = 0;
     
-    parse_argv(argc, argv, &length, &iterations);
+    parse_argv(argc, argv, &length, &iterations, &flags);
 
     if (length == 0) {
         length = 4000;
@@ -87,85 +91,85 @@ int main(int argc, char **argv)
         printf("not support yet\n");
         return 1;
     }
+    
+    if (rank == 0) {
+        cudaSetDevice(0);
+    } else {
+        cudaSetDevice(4);
+    }
 
-#if defined (CUDA_TEST)        
-    cudaMalloc((void **)&buffer_cuda, sizeof(double)*length);
-    cudaMemset(buffer_cuda, 0, sizeof(double)*length);
+#if defined (CUDA_TEST)
+    if (rank == 0) {        
+        cudaMallocHost((void **)&buffer_host, sizeof(double)*length);
+      //  buffer_host = (double*)malloc(sizeof(double)*length);
+        cudaMalloc((void **)&buffer_cuda, sizeof(double)*length);
+      //  cudaMemset(buffer_cuda, 0, sizeof(double)*length);
+    } else {
+        cudaMalloc((void **)&buffer_cuda, sizeof(double)*length);
+    }
     buffer_pingpong = buffer_cuda;
 #else
     cudaMallocHost((void **)&buffer_host, sizeof(double)*length);
     memset(buffer_host, 0, sizeof(double)*length);
     buffer_pingpong = buffer_host;
 #endif
+    printf("rank %d, pid %d\n", rank, getpid());
     
-    sleep(15);
+    //sleep(15);
     
     printf("I am rank %d, addr %p, total_size %lu\n", rank, buffer_pingpong, sizeof(double)*length);
     
     if (rank == root) {
+        printf("warmup1\n");
+        ierr = MPI_Send(buffer_pingpong, length, MPI_DOUBLE, dest, tag, MPI_COMM_WORLD);
+        ierr = MPI_Recv(buffer_pingpong, length, MPI_DOUBLE, dest, tag, MPI_COMM_WORLD, &status);
+        printf("warmup2\n");
+        ierr = MPI_Send(buffer_pingpong, length, MPI_DOUBLE, dest, tag, MPI_COMM_WORLD);
+        ierr = MPI_Recv(buffer_pingpong, length, MPI_DOUBLE, dest, tag, MPI_COMM_WORLD, &status);
+        if (flags == 1) { // cpu to gpu
+            buffer_pingpong = buffer_host;
+        } 
+        
+        printf("start\n");
         /* send */
         t1 = MPI_Wtime();
-        for (i = 0; i < iterations; i++) {        
-#if defined (MPI_ASYNC)
-            ierr = MPI_Isend(buffer_pingpong, length, MPI_DOUBLE, dest, tag, MPI_COMM_WORLD, &request);
-#else
+        for (i = 0; i < iterations; i++) {     
             ierr = MPI_Send(buffer_pingpong, length, MPI_DOUBLE, dest, tag, MPI_COMM_WORLD);
-#endif
             if (ierr != MPI_SUCCESS) {
                 printf("MPI_Send() returned %d", ierr);
             }
 
-#if defined (MPI_ASYNC)
-            ierr = MPI_Irecv(buffer_pingpong, length, MPI_DOUBLE, dest, tag, MPI_COMM_WORLD, &request);
-#else
             ierr = MPI_Recv(buffer_pingpong, length, MPI_DOUBLE, dest, tag, MPI_COMM_WORLD, &status);
-#endif
             if (ierr != MPI_SUCCESS) {
                 printf("MPI_Recv() returned %d", ierr);
             }
-#if defined (MPI_ASYNC)
-            MPI_Wait(&request, &status);
-#endif 
+
         }
         t2 = MPI_Wtime();
-        printf("root send&recv time %f\n", (t2-t1)*1e6/iterations);    
+        printf("root send&recv time %f microsenconds, BW %f MB/s\n", (t2-t1)*1e6/iterations, sizeof(double)*length/((t2-t1)*1e6/iterations)*2);    
         
     }
     
     if (rank == dest) {
         /* receive */
-        for (i = 0; i < iterations; i++) {   
-#if defined (MPI_ASYNC)
-            ierr = MPI_Irecv(buffer_pingpong, length, MPI_DOUBLE, root, tag, MPI_COMM_WORLD, &request);
-#else
+        for (i = 0; i < iterations+2; i++) {   
+
             ierr = MPI_Recv(buffer_pingpong, length, MPI_DOUBLE, root, tag, MPI_COMM_WORLD, &status);
-#endif
             if (ierr != MPI_SUCCESS) {
                 printf("MPI_Recv() returned %d", ierr);
             }
 
-#if defined (MPI_ASYNC)
-            ierr = MPI_Isend(buffer_pingpong, length, MPI_DOUBLE, root, tag, MPI_COMM_WORLD, &request);
-#else
             ierr = MPI_Send(buffer_pingpong, length, MPI_DOUBLE, root, tag, MPI_COMM_WORLD);
-#endif
-
             if (ierr != MPI_SUCCESS) {
                 printf("MPI_Send() returned %d", ierr);
             }
-#if defined (MPI_ASYNC)
-            MPI_Wait(&request, &status);
-#endif
         }
     }
 
     //sleep(5);
-
-#if defined (CUDA_TEST)   
-    cudaFree(buffer_cuda);
-#else
-    cudaFreeHost(buffer_host);
-#endif
+ 
+    if (buffer_cuda != NULL) cudaFree(buffer_cuda);
+    if (buffer_host != NULL) cudaFreeHost(buffer_host);
     MPI_Finalize();
     return 0;
 }
