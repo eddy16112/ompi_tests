@@ -75,6 +75,9 @@ MPITEST README for further details.
 
 #include "mpitest_cfg.h"
 #include "mpitest.h"
+#if defined (CUDA_TEST)
+#include <cuda_runtime.h>
+#endif
 
 
 int main(int argc, char *argv[])
@@ -313,8 +316,13 @@ int main(int argc, char *argv[])
                     MPITEST_byte_to_element(test_type, max_byte_length);
 
                 /*  Allocate send and receive Buffers */
+#if defined (CUDA_TEST_G2G)
+                MPITEST_get_gpu_buffer(test_type, max_length, &recv_buffer);
+                MPITEST_get_gpu_buffer(test_type, max_length, &send_buffer);
+#else
                 MPITEST_get_buffer(test_type, max_length, &recv_buffer);
                 MPITEST_get_buffer(test_type, max_length, &send_buffer);
+#endif
 
 /*-------------------------  Loop over Message Lengths  ---------------------*/
 
@@ -406,8 +414,13 @@ int main(int argc, char *argv[])
                                                           MPITEST_current_rank);
 
                                 /* Initialize send buffer */
+#if defined (CUDA_TEST_G2G)
+                                MPITEST_init_gpu_buffer(test_type, length + 1,
+                                                    value, send_buffer);   
+#else                            
                                 MPITEST_init_buffer(test_type, length + 1,
                                                     value, send_buffer);
+#endif
 
                                 send_to = test_nump;
                                 if (inter_comm)
@@ -435,11 +448,19 @@ int main(int argc, char *argv[])
                                         loop_fail++;
                                     }
                                     /*  Error Test  */
+#if defined (CUDA_TEST_G2G)
+                                    error =
+                                        MPITEST_gpu_buffer_errors(test_type,
+                                                              length,
+                                                              value,
+                                                              send_buffer);
+#else
                                     error =
                                         MPITEST_buffer_errors(test_type,
                                                               length,
                                                               value,
                                                               send_buffer);
+#endif
                                     if (error) {
                                         sprintf(info_buf,
                                                 "%d errors in send buffer (%d,%d,%d) len %d commsize %d commtype %d data_type %d root %d",
@@ -480,8 +501,13 @@ INTRA and INTER:  Each node of send group gets to be root and send to all
                                 /*  Initialize the receive buffer to -1 */
 
                                 MPITEST_dataTemplate_init(&value, -1);
+#if defined (CUDA_TEST_G2G)
+                                MPITEST_init_gpu_buffer(test_type, length + 1,
+                                                    value, recv_buffer);
+#else
                                 MPITEST_init_buffer(test_type, length + 1,
                                                     value, recv_buffer);
+#endif
                                 loop_cnt++;
                                 loop_fail = 0;
 
@@ -513,19 +539,32 @@ INTRA and INTER:  Each node of send group gets to be root and send to all
                                                           recv_stat.
                                                           MPI_SOURCE);
 
-
+#if defined (CUDA_TEST_G2G)
+                                error = MPITEST_gpu_buffer_errors(test_type,
+                                                              length,
+                                                              value,
+                                                              recv_buffer);
+#else
                                 error = MPITEST_buffer_errors(test_type,
                                                               length,
                                                               value,
                                                               recv_buffer);
+#endif
 
                                 /* check for receive buffer overflow */
                                 MPITEST_dataTemplate_init(&value, -1);
 
+#if defined (CUDA_TEST_G2G)
+                                error +=
+                                    MPITEST_gpu_buffer_errors_ov(test_type,
+                                                             length, value,
+                                                             recv_buffer);
+#else
                                 error +=
                                     MPITEST_buffer_errors_ov(test_type,
                                                              length, value,
                                                              recv_buffer);
+#endif
 
                                 if (error) {
                                     sprintf(info_buf,
@@ -626,8 +665,13 @@ INTRA and INTER:  Each node of send group gets to be root and send to all
 
                 }               /*  Loop over Message Lengths  */
 
+#if defined (CUDA_TEST_G2G)
+                cudaFree(send_buffer);
+                cudaFree(recv_buffer);
+#else
                 free(send_buffer);
                 free(recv_buffer);
+#endif
 
             }                   /*  Loop over Data Types  */
 

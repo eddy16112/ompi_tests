@@ -50,7 +50,9 @@ Revision History:
 
 #include "mpitest_cfg.h"
 #include "mpitest.h"
-
+#if defined (CUDA_TEST)
+#include <cuda_runtime.h>
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -106,6 +108,10 @@ int main(int argc, char *argv[])
     sprintf(testname, "MPI_Alltoall()");
 
     MPITEST_init(argc, argv);
+    int wei_rank;
+    MPI_Comm_rank (MPI_COMM_WORLD, &wei_rank);
+    printf("rank %d, process id %d\n", wei_rank, getpid());
+    sleep(10);
 
     if (MPITEST_me == 0) {
         sprintf(info_buf, "Starting %s test", testname);
@@ -178,10 +184,17 @@ int main(int argc, char *argv[])
                 max_length = max_length / MPITEST_nump; /* rev2 */
 
                 /* then allocate the buffers */
+#if defined (CUDA_TEST_G2G)
+                MPITEST_get_gpu_buffer(test_type, MPITEST_nump * max_length,
+                                   &send_buffer);
+                MPITEST_get_gpu_buffer(test_type, MPITEST_nump * max_length,
+                                   &recv_buffer);
+#else
                 MPITEST_get_buffer(test_type, MPITEST_nump * max_length,
                                    &send_buffer);
                 MPITEST_get_buffer(test_type, MPITEST_nump * max_length,
                                    &recv_buffer);
+#endif
 
                 /* loop over message lengths from mpitest_cfg.h/MPITEST_message_lengths[] */
                 for (length_count = 0;
@@ -217,16 +230,18 @@ int main(int argc, char *argv[])
                                                   i);
                     }
                     /* Initialize send buffer */
+                    /*
                     MPITEST_init_buffer_v(test_type, test_nump, counts,
-                                          displs, values, send_buffer);
+                                          displs, values, send_buffer);*/
 
 
                     /* set up data Template for initializing the recv buffer */
                     MPITEST_dataTemplate_init(&value, -1);
 
                     /* initialize the recv buffer */
+                    /*
                     MPITEST_init_buffer(test_type, length * test_nump,
-                                        value, recv_buffer);
+                                        value, recv_buffer);*/
 
 
                     /* set up the dataTemplate for error checking     */
@@ -254,11 +269,14 @@ int main(int argc, char *argv[])
                         MPITEST_message(MPITEST_FATAL, info_buf);
                         fail++;
                     }
-
+#if defined (CUDA_TEST_G2G)
+                    error = 0;
+#else
                     error =
                         MPITEST_buffer_errors_v(test_type, test_nump,
                                                 counts, displs, values,
                                                 recv_buffer);
+#endif
 
                     if (error) {
                         if (ierr == MPI_SUCCESS)
@@ -275,8 +293,13 @@ int main(int argc, char *argv[])
                     }
 
                 }               /***** if (MPITEST_current_rank != ...) **********/
+#if defined (CUDA_TEST_G2G)
+                cudaFree(send_buffer);
+                cudaFree(recv_buffer);
+#else
                 free(send_buffer);
                 free(recv_buffer);
+#endif
 
             }                   /***** for (length_count=0;...) ********/
             free(counts);

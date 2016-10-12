@@ -189,10 +189,14 @@ int MPITEST_get_buffer( int buffer_type, int length, void **buffer);
 int MPITEST_get_gpu_buffer( int buffer_type, int length, void **buffer);
 int MPITEST_init_gpu_buffer(int buffer_type, int length,
                             struct dataTemplate value, void *buffer);
+int MPITEST_init_gpu_buffer_inc(int buffer_type, int length,
+                            struct dataTemplate value, void *buffer);
 int MPITEST_gpu_buffer_errors(int buffer_type, int length,
                               struct dataTemplate value, void *buffer);
 int MPITEST_gpu_buffer_errors_ov(int buffer_type, int length,
                                  struct dataTemplate value, void *buffer);
+int MPITEST_gpu_buffer_errors_inc(  int buffer_type, int length, struct dataTemplate value, 
+		  void *buffer);
 #endif 
 
 #endif

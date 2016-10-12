@@ -46,6 +46,9 @@ encoded in configuration arrays in the file mpitest_cfg.h .
 
 #include "mpitest_cfg.h"
 #include "mpitest.h"
+#if defined (CUDA_TEST)
+#include <cuda_runtime.h>
+#endif
 
 
 int main(int argc, char *argv[])
@@ -149,7 +152,11 @@ int main(int argc, char *argv[])
                     MPITEST_byte_to_element(test_type, max_byte_length);
 
                 /* then allocate the buffer */
+#if defined (CUDA_TEST_G2G)
+                MPITEST_get_gpu_buffer(test_type, max_length, &send_buffer);
+#else
                 MPITEST_get_buffer(test_type, max_length, &send_buffer);
+#endif
 
                 for (length_count = 0;
                      length_count < MPITEST_num_message_lengths();
@@ -174,8 +181,13 @@ int main(int argc, char *argv[])
                                                   MPITEST_current_rank);
 
                         /* Initialize send buffer */
+#if defined (CUDA_TEST_G2G)
+                        MPITEST_init_gpu_buffer(test_type, length + 1,
+                                          value, send_buffer);
+#else
                         MPITEST_init_buffer(test_type, length + 1,
                                             value, send_buffer);
+#endif
 
 
                         /*
@@ -198,16 +210,28 @@ int main(int argc, char *argv[])
                             MPITEST_message(MPITEST_FATAL, info_buf);
                             fail++;
                         }
+#if defined (CUDA_TEST_G2G)
+                        error =
+                            MPITEST_gpu_buffer_errors(test_type, length, value,
+                                                  send_buffer);
+#else
                         error =
                             MPITEST_buffer_errors(test_type, length, value,
                                                   send_buffer);
+#endif
 
                         /* check for receive buffer overflow */
                         MPITEST_dataTemplate_init(&value,
                                                   MPITEST_current_rank);
+#if defined (CUDA_TEST_G2G)
+                        error +=
+                            MPITEST_gpu_buffer_errors_ov(test_type, length,
+                                                   value, send_buffer);
+#else
                         error +=
                             MPITEST_buffer_errors_ov(test_type, length,
                                                      value, send_buffer);
+#endif
 
                         if (error) {
                             if (ierr == MPI_SUCCESS)
@@ -225,7 +249,11 @@ int main(int argc, char *argv[])
                         }
                     }
                 }
+#if defined (CUDA_TEST_G2G)
+                cudaFree(send_buffer);
+#else
                 free(send_buffer);
+#endif
             }
         }
 

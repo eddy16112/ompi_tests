@@ -51,6 +51,9 @@ Revision History:
 
 #include "mpitest_cfg.h"
 #include "mpitest.h"
+#if defined (CUDA_TEST)
+#include <cuda_runtime.h>
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -168,9 +171,15 @@ int main(int argc, char *argv[])
                     max_length = MPITEST_nump;  /* rev2 */
                 max_length = max_length / MPITEST_nump; /* rev2 */
 
+#if defined (CUDA_TEST_G2G)
+                MPITEST_get_gpu_buffer(test_type, max_length, &recv_buffer);
+                MPITEST_get_gpu_buffer(test_type, max_length * MPITEST_nump,
+                                   &send_buffer);
+#else
                 MPITEST_get_buffer(test_type, max_length, &recv_buffer);
                 MPITEST_get_buffer(test_type, max_length * MPITEST_nump,
                                    &send_buffer);
+#endif
 
                 for (length_count = 0;
                      length_count < MPITEST_num_message_lengths();
@@ -197,14 +206,23 @@ int main(int argc, char *argv[])
                                                   MPITEST_current_rank);
 
                         /* Initialize send buffer */
+#if defined (CUDA_TEST_G2G)
+                        MPITEST_init_gpu_buffer_inc(test_type, test_nump * length, value, send_buffer);     /* rev2 */
+#else
                         MPITEST_init_buffer_inc(test_type, test_nump * length, value, send_buffer);     /* rev2 */
+#endif
 
                         /* Set up dataTemplate for initializing recv buffer */
                         MPITEST_dataTemplate_init(&value, -1);
 
                         /* Initialize recv buffer */
+#if defined (CUDA_TEST_G2G)
+                        MPITEST_init_gpu_buffer(test_type, length + 1,
+                                            value, recv_buffer);
+#else
                         MPITEST_init_buffer(test_type, length + 1,
                                             value, recv_buffer);
+#endif
 
                         /* Set up dataTemplate for error checking recv buffer */
                         MPITEST_dataTemplate_init(&value, root + length * MPITEST_current_rank);        /* rev2 */
@@ -227,15 +245,27 @@ int main(int argc, char *argv[])
                         }
 
                         error = 0;
+#if defined (CUDA_TEST_G2G)
+                        error =
+                            MPITEST_gpu_buffer_errors_inc(test_type, length,
+                                                      value, recv_buffer);
+#else
                         error =
                             MPITEST_buffer_errors_inc(test_type, length,
                                                       value, recv_buffer);
+#endif
 
                         /* check for recv_buffer overflow */
                         MPITEST_dataTemplate_init(&value, -1);
+#if defined (CUDA_TEST_G2G)
+                        error += MPITEST_gpu_buffer_errors_ov(test_type,
+                                                          length, value,
+                                                          recv_buffer);
+#else
                         error += MPITEST_buffer_errors_ov(test_type,
                                                           length, value,
                                                           recv_buffer);
+#endif
 
                         if (error) {
                             if (ierr == MPI_SUCCESS)
@@ -255,8 +285,13 @@ int main(int argc, char *argv[])
                     }           /***** if (MPITEST_current_rank != MPI_UNDEFINED) *****/
                 }               /***** for (root=0; ....) ********/
 
+#if defined (CUDA_TEST_G2G)
+                cudaFree(recv_buffer);
+                cudaFree(send_buffer);
+#else
                 free(recv_buffer);
                 free(send_buffer);
+#endif
 
             }                   /****** for (length_count=0;...) *********/
 

@@ -47,6 +47,9 @@ Revision History:
 
 #include "mpitest_cfg.h"
 #include "mpitest.h"
+#if defined (CUDA_TEST)
+#include <cuda_runtime.h>
+#endif
 
 
 int main(int argc, char *argv[])
@@ -171,9 +174,15 @@ int main(int argc, char *argv[])
                     max_length = MPITEST_nump;  /* rev2 */
                 max_length = max_length / MPITEST_nump; /* rev2 */
 
+#if defined (CUDA_TEST_G2G)
+                MPITEST_get_gpu_buffer(test_type, max_length * MPITEST_nump,
+                                   &recv_buffer);
+                MPITEST_get_gpu_buffer(test_type, max_length, &send_buffer);
+#else
                 MPITEST_get_buffer(test_type, max_length * MPITEST_nump,
                                    &recv_buffer);
                 MPITEST_get_buffer(test_type, max_length, &send_buffer);
+#endif
 
                 /* loop over message lengths */
                 for (length_count = 0;
@@ -201,8 +210,13 @@ int main(int argc, char *argv[])
                         MPITEST_dataTemplate_init(&value, -1);
 
                         /* Initialize recv buffer */
+#if defined (CUDA_TEST_G2G)
+                        MPITEST_init_gpu_buffer(test_type, test_nump * length,
+                                            value, recv_buffer);
+#else
                         MPITEST_init_buffer(test_type, test_nump * length,
                                             value, recv_buffer);
+#endif
 
 
                         /* Set up the dataTemplate for initializing send buffer */
@@ -210,8 +224,13 @@ int main(int argc, char *argv[])
                                                   MPITEST_current_rank);
 
                         /* Initialize send buffer */
+#if defined (CUDA_TEST_G2G)
+                        MPITEST_init_gpu_buffer(test_type, length,
+                                            value, send_buffer);
+#else
                         MPITEST_init_buffer(test_type, length,
                                             value, send_buffer);
+#endif
 
 
                         /* Set up arrays for error testing  */
@@ -241,11 +260,15 @@ int main(int argc, char *argv[])
                         /* do error checking only on the root process */
                         error = 0;
                         if (MPITEST_current_rank == root) {
+#if defined (CUDA_TEST_G2G)
+                            error = 0;
+#else
                             error =
                                 MPITEST_buffer_errors_v(test_type,
                                                         test_nump, counts,
                                                         displs, values,
                                                         recv_buffer);
+#endif
                         }
 
 
@@ -267,8 +290,13 @@ int main(int argc, char *argv[])
                     }           /***** if (MPITEST_current_rank != MPI_UNDEFINED) *****/
 
                 }               /***** for (root=0; ....) ********/
+#if defined (CUDA_TEST_G2G)
+                cudaFree(recv_buffer);
+                cudaFree(send_buffer);
+#else
                 free(recv_buffer);
                 free(send_buffer);
+#endif
             }                   /****** for (length_count=0;...) *********/
             free(counts);
             free(displs);

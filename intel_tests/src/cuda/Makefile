@@ -1,10 +1,10 @@
 SHELL	= /bin/sh
 # Allow environment to override setting of CUDA_HOME
 ifndef CUDA_HOME
-  CUDA_HOME:=/usr/local/cuda
+  CUDA_HOME:=/cm/shared/apps/cuda75/toolkit/7.5.18
 endif
 CC	= mpicc
-CFLAGS = -I.. -g -I$(CUDA_HOME)/include -L$(CUDA_HOME)/lib64 -lcuda -Wl,-rpath,$(CUDA_HOME)/lib64 -lm
+CFLAGS = -I.. -g -I$(CUDA_HOME)/include -L$(CUDA_HOME)/lib64 -lcudart -lcuda -Wl,-rpath,$(CUDA_HOME)/lib64 -lm
 CPPFLAGS= -Isrc 
 LDLIBS	=
 INTELDIR = ..

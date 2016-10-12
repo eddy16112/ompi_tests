@@ -1087,6 +1087,22 @@ int MPITEST_init_gpu_buffer(int buffer_type, int length,
     free (cpu_buffer);
     return 0;
 }
+int MPITEST_init_gpu_buffer_inc(int buffer_type, int length,
+                            struct dataTemplate value, void *buffer)
+{
+    void *cpu_buffer;
+    MPI_Aint extent;
+    MPITEST_get_buffer(buffer_type,
+                       length,
+                       (void *) &cpu_buffer);
+    MPITEST_init_buffer_inc(buffer_type, length, value,
+                        cpu_buffer);
+    MPI_Type_extent(MPITEST_mpi_datatypes[buffer_type],
+                    &extent);
+    cudaMemcpy(buffer, cpu_buffer, extent*length, cudaMemcpyHostToDevice);
+    free (cpu_buffer);
+    return 0;
+}
 #endif
 
 
@@ -2235,6 +2251,23 @@ int MPITEST_gpu_buffer_errors_ov(int buffer_type, int length,
     free (cpu_buffer);
     return error;
 }
+
+int MPITEST_gpu_buffer_errors_inc(int buffer_type, int length,
+                              struct dataTemplate value, void *buffer)
+{
+    void *cpu_buffer;
+    MPI_Aint extent;
+    int error;
+    MPITEST_get_buffer(buffer_type,
+                       length+1,
+                       (void *) &cpu_buffer);
+    MPI_Type_extent(MPITEST_mpi_datatypes[buffer_type],
+                    &extent);
+    cudaMemcpy(cpu_buffer, buffer, extent*(length+1), cudaMemcpyDeviceToHost);
+    error = MPITEST_buffer_errors_inc(buffer_type, length, value, cpu_buffer);
+    free (cpu_buffer);
+    return error;
+}
 #endif
 
 
@@ -2394,6 +2427,10 @@ int MPITEST_get_gpu_buffer(int buffer_type, int length, void **buffer)
 *****************************************************************/
 {
     int error = 0;
+    int wei_rank;
+    MPI_Comm_rank (MPI_COMM_WORLD, &wei_rank);
+    wei_rank = wei_rank % 3;
+    cudaSetDevice(wei_rank);
 
     switch (buffer_type) {
     case MPITEST_int:
