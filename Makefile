@@ -1,6 +1,6 @@
-#MPI_ROOT = /home-2/wwu/build-gpu-new
-#MPI_ROOT = /home-2/wwu/build-lx
-MPI_ROOT = /home-2/wwu/build-test
+#MPI_ROOT = /home-2/wwu/build-gpu-rebase
+MPI_ROOT = /home-2/wwu/build-lx
+#MPI_ROOT = /home-2/wwu/build-test
 #MPI_ROOT = /home/wwu12/ompi/build-gpu
 CUDA_ROOT = /cm/shared/apps/cuda75/toolkit/7.5.18
 #CUDA_ROOT = /mnt/sw/cuda

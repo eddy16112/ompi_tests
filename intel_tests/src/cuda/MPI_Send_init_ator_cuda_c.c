@@ -153,6 +153,10 @@ int main(int argc, char *argv[])
                 ierr);
         MPITEST_message(MPITEST_FATAL, info_buf);
     }
+    int wei_rank;
+    MPI_Comm_rank (MPI_COMM_WORLD, &wei_rank);
+    printf("rank %d, process id %d\n", wei_rank, getpid());
+    sleep(10);
 
     sprintf(testname, "MPI_Send_init_ator: Persistent all send to root");
     if (CUDATEST_UNSUPPORTED_DEVICES == CUDATEST_init(0)) {

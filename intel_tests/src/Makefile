@@ -5,7 +5,7 @@
 SHELL	= /bin/sh
 CC	= mpicc
 FC	= mpif77
-CFLAGS	= -g -O0 -I/mnt/sw/cuda/include -L/shared/apps/cuda/CUDA-v7.5.18/lib64 -lcudart
+CFLAGS	= -g -O0 -I/shared/apps/cuda/CUDA-v7.5.18/include -L/shared/apps/cuda/CUDA-v7.5.18/lib64 -lcudart
 FFLAGS	= -g -Isrc -I.
 # We don't need to see all the deprecated warnings -- we *know* we're
 # testing deprecated interfaces.

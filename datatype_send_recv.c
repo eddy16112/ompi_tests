@@ -507,7 +507,7 @@ int main(int argc, char **argv)
         return 1;
     }
     printf("rank %d, pid %d\n", rank, getpid());
-    //sleep(10);
+    sleep(10);
     if (rank == 0) {
         cudaSetDevice(0);
     } else {
@@ -517,8 +517,8 @@ int main(int argc, char **argv)
    root_ddt = DDT_INDEX_LOW;
    dest_ddt = DDT_INDEX_UP;
     
-  // root_ddt = DDT_VEC;
-    //   dest_ddt = DDT_VEC;
+   //root_ddt = DDT_VEC;
+     //  dest_ddt = DDT_VEC;
     
                  //root_ddt = DDT_CONT;
                  //dest_ddt = DDT_CONT;
@@ -526,8 +526,8 @@ int main(int argc, char **argv)
          //root_ddt = DDT_INDEX_LOW;
          //dest_ddt = DDT_CONT;
         
-//   root_ddt = DDT_VEC;
-  // dest_ddt = DDT_CONT;
+   //root_ddt = DDT_VEC;
+   //dest_ddt = DDT_CONT;
         
         //root_ddt = DDT_INDEX_LOW;
         //dest_ddt = DDT_VEC_INDEX;
