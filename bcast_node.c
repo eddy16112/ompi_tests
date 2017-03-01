@@ -166,8 +166,23 @@ int main(int argc, char** argv) {
             }
         }
     }*/
-    cudaSetDevice(my_rank % 2 + 0);
-    
+
+
+    cudaSetDevice(my_rank % 4 + 0);
+
+    int new_rank;
+    int new_size;
+    MPI_Comm new_comm;
+    int my_new_rank;
+    int node_id = my_rank / 4;
+    int rank_id = my_rank % 4;
+    my_new_rank = node_id + rank_id*3;
+    MPI_Comm_split(MPI_COMM_WORLD, 0, my_new_rank, &new_comm);
+    MPI_Comm_rank(new_comm, &new_rank);
+    MPI_Comm_size(new_comm, &new_size);
+
+    my_rank = new_rank;
+//    cudaSetDevice(my_rank % 2 + 0);
 
 
 #if defined (DDT_TEST)
@@ -192,8 +207,8 @@ int main(int argc, char** argv) {
     } else {
         buffer_bcast = buffer_cuda;
     }
-    MPI_Bcast(buffer_bcast, length, MPI_CHAR, root, MPI_COMM_WORLD);
-    MPI_Bcast(buffer_bcast, length, MPI_CHAR, root, MPI_COMM_WORLD);
+    MPI_Bcast(buffer_bcast, length, MPI_CHAR, root, new_comm);
+    MPI_Bcast(buffer_bcast, length, MPI_CHAR, root, new_comm);
     //MPI_Bcast(buffer_bcast, length, MPI_CHAR, root, MPI_COMM_WORLD);
     //MPI_Barrier(MPI_COMM_WORLD);
     cudaMemset(buffer_cuda, 0, sizeof(char)*length);
@@ -212,7 +227,7 @@ int main(int argc, char** argv) {
         buffer_bcast = buffer_cuda;
     }
     
-    MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Barrier(new_comm);
     if (my_rank == root) {
         t1 = MPI_Wtime();  
     }
@@ -230,8 +245,8 @@ int main(int argc, char** argv) {
     //     }
     //     MPI_Barrier(MPI_COMM_WORLD);
     for (j = 0; j < 10; j++) {
-        MPI_Bcast(buffer_bcast, length, MPI_CHAR, root, MPI_COMM_WORLD); 
-        MPI_Barrier(MPI_COMM_WORLD);
+        MPI_Bcast(buffer_bcast, length, MPI_CHAR, root, new_comm); 
+        MPI_Barrier(new_comm);
     }
 
 #endif

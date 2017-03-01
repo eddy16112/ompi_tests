@@ -27,7 +27,7 @@ LIB = -ldl -L$(MPI_ROOT)/lib -lmpi -L$(CUDA_ROOT)/lib64 -lcudart -lcuda
 
 .PHONY: all clean
 
-all: ddt_send_recv datatype_send_recv vector_send_recv cuda_send_recv bcast reduce allreduce send_m mybcast multi_isend
+all: ddt_send_recv datatype_send_recv vector_send_recv cuda_send_recv bcast bcast_node bcast_random reduce allreduce send_m mybcast multi_isend
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
@@ -46,7 +46,13 @@ cuda_send_recv: cuda_send_recv.o
 	
 bcast: bcast.o
 	$(CC) $(CFLAGS) $(INC) $(LIB) $^ -o $@
+
+bcast_node: bcast_node.o
+	$(CC) $(CFLAGS) $(INC) $(LIB) $^ -o $@
 	
+bcast_random: bcast_random.o
+	$(CC) $(CFLAGS) $(INC) $(LIB) $^ -o $@
+
 reduce: reduce.o
 	$(CC) $(CFLAGS) $(INC) $(LIB) $^ -o $@
 	
